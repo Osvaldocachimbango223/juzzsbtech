@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Juzzs Travel & Hospitality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <!-- Sidebar -->
+            <div class="auth-sidebar">
+                <div class="auth-sidebar-content">
+                    <div class="auth-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="8" fill="white" opacity="0.2"/>
+                            <path d="M12 28V12L20 16L28 12V28L20 24L12 28Z" fill="white"/>
+                        </svg>
+                        <div>
+                            <h2>Juzzs</h2>
+                            <span>Travel & Hospitality</span>
+                        </div>
+                    </div>
+                    
+                    <h3>Comece Sua Jornada!</h3>
+                    <p>Crie sua conta e tenha acesso a experiências turísticas completas em Angola.</p>
+                    
+                    <ul class="auth-features">
+                        <li>
+                            <span class="feature-icon"></span>
+                            <div class="feature-text">
+                                <h4>Cadastro Rápido</h4>
+                                <p>Menos de 1 minuto</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon"></span>
+                            <div class="feature-text">
+                                <h4>Ofertas Exclusivas</h4>
+                                <p>Promoções para novos clientes</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon"></span>
+                            <div class="feature-text">
+                                <h4>Dados Seguros</h4>
+                                <p>Proteção garantida</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div class="auth-form">
+                <h3>Criar Conta</h3>
+                <p>Preencha seus dados para começar</p>
+
+                <div id="registerMessage"></div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" name="name" required placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Telefone</label>
+                        <input type="tel" id="phone" name="phone" required placeholder="+244 923 456 789">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" required placeholder="••••••••" minlength="6">
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar Senha</label>
+                        <div class="password-input">
+                            <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••">
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword')">👁️</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Criar Conta</button>
+                </form>
+
+                <div class="auth-footer">
+                    Já tem uma conta? <a href="login.html">Entre</a>
+                </div>
+
+                <div class="auth-footer" style="margin-top: 16px;">
+                    <a href="index.html">← Voltar para página inicial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Initialize with default admin if no users exist
+        if (!localStorage.getItem('juzzs_users')) {
+            const defaultUsers = [
+                {
+                    id: generateId(),
+                    name: 'Admin Juzzs',
+                    email: 'admin@juzzs.ao',
+                    password: 'admin123',
+                    phone: '+244 923 456 789',
+                    role: 'admin',
+                    createdAt: new Date().toISOString()
+                }
+            ];
+            localStorage.setItem('juzzs_users', JSON.stringify(defaultUsers));
+        }
+
+        // Register form handler
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            // Validate password match
+            if (password !== confirmPassword) {
+                showMessage('As senhas não coincidem', 'error');
+                return;
+            }
+            
+            // Check if email already exists
+            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
+            if (users.find(u => u.email === email)) {
+                showMessage('Este email já está cadastrado', 'error');
+                return;
+            }
+            
+            // Create new user
+            const newUser = {
+                id: generateId(),
+                name: name,
+                email: email,
+                phone: phone,
+                password: password,
+                role: 'client',
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('juzzs_users', JSON.stringify(users));
+            localStorage.setItem('juzzs_current_user', JSON.stringify(newUser));
+            
+            showMessage('Conta criada com sucesso! Redirecionando...', 'success');
+            
+            setTimeout(() => {
+                window.location.href = 'dashboard-cliente.html';
+            }, 1500);
+        });
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('registerMessage');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.textContent = message;
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+
+        function generateId() {
+            return Math.random().toString(36).substr(2, 9);
+        }
+    </script>
+</body>
+</html>

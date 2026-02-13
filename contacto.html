@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Equipe Nº 4</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>Equipe 4</h1>
+                <span>Contacto</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" style="min-height:60vh;">
+        <div class="hero-bg"></div>
+        <div class="container">
+            <div>
+                <span class="hero-badge">Fale Connosco</span>
+                <h2 class="hero-title">Entre em Contacto</h2>
+                <p class="hero-subtitle">
+                    Estamos disponíveis para responder às suas dúvidas e receber as suas mensagens.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact">
+        <div class="container">
+
+            <div class="section-header">
+                <span class="section-tag">Contacto</span>
+               
+            </div>
+
+            <div class="contact-grid">
+
+                <!-- LOCALIZAÇÃO -->
+                <div class="contact-card">
+                    <h4><img src="loca.png" alt=""> Nossa Localização</h4>
+                    <p>Estamos localizados em Angola.</p>
+
+                    <div class="map-container">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18..."
+                            width="100%" 
+                            height="250" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy">
+                        </iframe>
+                    </div>
+
+                    <p><strong>Email:</strong> equipe4@email.com</p>
+                    <p><strong>Telefone:</strong> +244 935 144 360</p>
+                </div>
+
+                <!-- FORMULÁRIO -->
+                <div class="contact-card">
+                    <h4><img src="email.png" alt=""> Enviar Mensagem</h4>
+
+                    <form action="mailto:equipe4@email.com" method="post" enctype="text/plain">
+                        
+                        <div class="form-group">
+                            <label>Nome</label>
+                            <input type="text" name="nome" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mensagem</label>
+                            <textarea name="mensagem" rows="5" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-submit">
+                            Enviar Mensagem
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>
