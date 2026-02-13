@@ -1,0 +1,736 @@
+/* ===================================
+   PÁGINA SOBRE - ESTILOS ESPECÍFICOS
+   =================================== */
+
+/* Hero About */
+.hero-about {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    padding-bottom: 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg-about {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 50%, #FED7AA 100%);
+    opacity: 0.6;
+    z-index: -1;
+}
+
+.hero-bg-about::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(217, 119, 6, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 15s infinite ease-in-out;
+}
+
+.hero-content-about {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-badge-about {
+    display: inline-block;
+    background: rgba(217, 119, 6, 0.15);
+    color: var(--primary);
+    padding: 10px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    animation: slideDown 0.6s ease-out;
+}
+
+.hero-title-about {
+    font-family: var(--font-display);
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 24px;
+    color: var(--dark);
+    animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+.hero-subtitle-about {
+    font-size: 20px;
+    color: var(--gray);
+    margin-bottom: 50px;
+    line-height: 1.8;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    animation: slideUp 0.6s ease-out 0.3s both;
+}
+
+.hero-stats-about {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    animation: slideUp 0.6s ease-out 0.4s both;
+}
+
+.stat-about {
+    text-align: center;
+}
+
+.stat-number-about {
+    font-family: var(--font-display);
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--primary);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.stat-label-about {
+    font-size: 15px;
+    color: var(--gray);
+    font-weight: 600;
+}
+
+/* Mission & Vision */
+.mission-vision {
+    padding: 100px 0;
+    background: white;
+}
+
+.mv-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.mv-card {
+    background: white;
+    padding: 40px;
+    border-radius: 24px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mv-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.mv-card:hover::before {
+    transform: scaleX(1);
+}
+
+.mv-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary);
+}
+
+.mv-icon {
+    font-size: 56px;
+    margin-bottom: 24px;
+}
+
+.mv-card h3 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--dark);
+}
+
+.mv-card p {
+    color: var(--gray);
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+/* Team Section */
+.team-section {
+    padding: 100px 0;
+    background: var(--light-gray);
+}
+
+.section-header-about {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 80px;
+}
+
+.section-tag-about {
+    display: inline-block;
+    background: rgba(217, 119, 6, 0.1);
+    color: var(--primary);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.section-title-about {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 16px;
+    line-height: 1.2;
+}
+
+.section-subtitle-about {
+    font-size: 18px;
+    color: var(--gray);
+    line-height: 1.7;
+}
+
+/* Team Category */
+.team-category {
+    margin-bottom: 80px;
+}
+
+.team-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-title {
+    font-family: var(--font-display);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 40px;
+    padding-bottom: 16px;
+    border-bottom: 3px solid var(--primary);
+}
+
+/* Team Grid */
+.team-grid-tutors {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.team-grid-students {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+}
+
+/* Modern Team Card */
+.team-card-modern {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.team-card-modern:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.team-card-modern.tutor {
+    border-top: 4px solid #10B981;
+}
+
+.team-card-modern.co-tutor {
+    border-top: 4px solid #3B82F6;
+}
+
+.team-card-modern.student {
+    border-top: 4px solid #8B5CF6;
+}
+
+/* Card Badge */
+.card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 10;
+}
+
+.tutor-badge {
+    background: #10B981;
+    color: white;
+}
+
+.co-tutor-badge {
+    background: #3B82F6;
+    color: white;
+}
+
+.student-badge {
+    background: #8B5CF6;
+    color: white;
+}
+
+/* Team Image */
+.team-image-container {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+    background: var(--light-gray);
+}
+
+.team-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.team-card-modern:hover .team-image-container img {
+    transform: scale(1.1);
+}
+
+/* Team Overlay */
+.team-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 50%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 24px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.team-card-modern:hover .team-overlay {
+    opacity: 1;
+}
+
+.social-links-team {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background: var(--primary);
+    transform: translateY(-3px);
+}
+
+/* Team Content */
+.team-content {
+    padding: 28px;
+}
+
+.team-content h4 {
+    font-family: var(--font-display);
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+}
+
+.team-content .role {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.team-content .bio {
+    color: var(--gray);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Team Stats */
+.team-stats {
+    display: flex;
+    gap: 16px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+}
+
+.team-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.stat-icon {
+    font-size: 20px;
+}
+
+.stat-text {
+    font-size: 13px;
+    color: var(--gray);
+    font-weight: 500;
+}
+
+/* Skills Section */
+.skills-section {
+    padding: 100px 0;
+    background: white;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+}
+
+.skill-card {
+    background: white;
+    padding: 32px;
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--primary);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.skill-icon {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.skill-card h4 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--dark);
+}
+
+.skill-card p {
+    color: var(--gray);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.skill-bar {
+    height: 8px;
+    background: var(--light-gray);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.skill-progress {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 10px;
+    transition: width 1s ease;
+}
+
+/* Achievements Section */
+.achievements-section {
+    padding: 100px 0;
+    background: var(--light-gray);
+}
+
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px;
+}
+
+.achievement-card {
+    background: white;
+    padding: 40px 32px;
+    border-radius: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.achievement-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    border-color: var(--primary);
+}
+
+.achievement-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+}
+
+.achievement-card h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 16px;
+}
+
+.achievement-number {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--primary);
+    margin-bottom: 12px;
+}
+
+.achievement-card p {
+    color: var(--gray);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* CTA About */
+.cta-about {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+}
+
+.cta-content-about {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.cta-content-about h2 {
+    font-family: var(--font-display);
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.cta-content-about p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.95;
+    line-height: 1.7;
+}
+
+.cta-buttons-about {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.btn-cta-primary,
+.btn-cta-secondary {
+    padding: 16px 40px;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-cta-primary {
+    background: white;
+    color: var(--primary);
+}
+
+.btn-cta-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+}
+
+.btn-cta-secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn-cta-secondary:hover {
+    background: white;
+    color: var(--primary);
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    50% {
+        transform: translate(-30px, 30px) rotate(3deg);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .hero-title-about {
+        font-size: 56px;
+    }
+    
+    .team-grid-tutors {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .hero-title-about {
+        font-size: 48px;
+    }
+    
+    .mv-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .team-grid-tutors,
+    .team-grid-students {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .achievements-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-about {
+        min-height: 60vh;
+        padding-top: 120px;
+        padding-bottom: 60px;
+    }
+    
+    .hero-title-about {
+        font-size: 40px;
+    }
+    
+    .hero-subtitle-about {
+        font-size: 18px;
+    }
+    
+    .hero-stats-about {
+        gap: 40px;
+        flex-wrap: wrap;
+    }
+    
+    .stat-number-about {
+        font-size: 42px;
+    }
+    
+    .section-title-about {
+        font-size: 36px;
+    }
+    
+    .category-title {
+        font-size: 26px;
+    }
+    
+    .team-grid-tutors,
+    .team-grid-students {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-image-container {
+        height: 250px;
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .achievements-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-content-about h2 {
+        font-size: 36px;
+    }
+    
+    .cta-content-about p {
+        font-size: 18px;
+    }
+    
+    .cta-buttons-about {
+        flex-direction: column;
+    }
+    
+    .btn-cta-primary,
+    .btn-cta-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title-about {
+        font-size: 32px;
+    }
+    
+    .hero-stats-about {
+        flex-direction: column;
+        gap: 24px;
+    }
+    
+    .team-content {
+        padding: 20px;
+    }
+    
+    .team-stats {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
