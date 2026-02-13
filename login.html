@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Juzzs Travel & Hospitality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-page">
+        <div class="auth-container">
+            <!-- Sidebar -->
+            <div class="auth-sidebar">
+                <div class="auth-sidebar-content">
+                    <div class="auth-logo">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="8" fill="white" opacity="0.2"/>
+                            <path d="M12 28V12L20 16L28 12V28L20 24L12 28Z" fill="white"/>
+                        </svg>
+                        <div>
+                            <h2>Juzzs</h2>
+                            <span>Travel & Hospitality</span>
+                        </div>
+                    </div>
+                    
+                    <h3>Bem-vindo de volta!</h3>
+                    <p>Entre na sua conta e continue explorando as melhores experiências turísticas de Angola.</p>
+                    
+                    <ul class="auth-features">
+                        <li>
+                            <span class="feature-icon">🏨</span>
+                            <div class="feature-text">
+                                <h4>Hospedagem Premium</h4>
+                                <p>Acesso a quartos confortáveis</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🗺️</span>
+                            <div class="feature-text">
+                                <h4>Passeios Exclusivos</h4>
+                                <p>Tours personalizados</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="feature-icon">🚗</span>
+                            <div class="feature-text">
+                                <h4>Transporte Incluído</h4>
+                                <p>Conforto e segurança</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form">
+                <h3>Entrar na Conta</h3>
+                <p>Digite suas credenciais para acessar</p>
+
+                <div id="loginMessage"></div>
+
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Senha</label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" required placeholder="••••••••">
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">👁️</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Entrar</button>
+                </form>
+
+                <div class="auth-footer">
+                    Não tem uma conta? <a href="cadastro.html">Cadastre-se</a>
+                </div>
+
+                <div class="auth-footer" style="margin-top: 16px;">
+                    <a href="index.html">← Voltar para página inicial</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                localStorage.setItem('juzzs_current_user', JSON.stringify(user));
+                
+                // Redirect based on role
+                if (user.role === 'admin') {
+                    window.location.href = 'dashboard-admin.html';
+                } else if (user.role === 'employee') {
+                    window.location.href = 'dashboard-funcionario.html';
+                } else {
+                    window.location.href = 'dashboard-cliente.html';
+                }
+            } else {
+                showMessage('Email ou senha incorretos', 'error');
+            }
+        });
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('loginMessage');
+            messageDiv.className = type === 'error' ? 'error-message' : 'success-message';
+            messageDiv.textContent = message;
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            input.type = input.type === 'password' ? 'text' : 'password';
+        }
+    </script>
+</body>
+</html>
