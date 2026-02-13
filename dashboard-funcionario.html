@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Funcionário - Juzzs</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="employee-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="logo.png" alt="Juzzs Logo" width="40px">
+                <div>
+                    <h2>Juzzs</h2>
+                    <span>Funcionário</span>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showSection('inicio')" class="active">
+                        <span class="icon">📊</span>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('reservas')">
+                        <span class="icon">📅</span>
+                        <span>Gestão de Reservas</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('disponibilidade')">
+                        <span class="icon">🏨</span>
+                        <span>Disponibilidade</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('calendario')">
+                        <span class="icon">📆</span>
+                        <span>Calendário</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('relatorios')">
+                        <span class="icon">📈</span>
+                        <span>Relatórios</span>
+                    </a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar" style="background: linear-gradient(135deg, #3B82F6, #1D4ED8);"></div>
+                    <div class="user-details">
+                        <h4 id="userName"></h4>
+                        <p>Funcionário</p>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <span>🚪</span>
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Início Section -->
+            <div id="inicio-section" class="section active">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Painel de Controle</h1>
+                        <p>Gerencie reservas, disponibilidade e atendimentos</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="showSection('reservas')">
+                        <span>📋</span>
+                        Ver Todas Reservas
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card clickable" onclick="filterByStatus('all')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📋</div>
+                        </div>
+                        <div class="stat-value" id="totalReservas">0</div>
+                        <div class="stat-label">Total de Reservas</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="filterByStatus('pending')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">⏰</div>
+                        </div>
+                        <div class="stat-value" id="reservasPendentes">0</div>
+                        <div class="stat-label">Pendentes de Ação</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="filterByStatus('confirmed')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">✓</div>
+                        </div>
+                        <div class="stat-value" id="reservasConfirmadas">0</div>
+                        <div class="stat-label">Confirmadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">💰</div>
+                        </div>
+                        <div class="stat-value" id="receitaTotal">0 Kz</div>
+                        <div class="stat-label">Receita Total</div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ações Rápidas</h3>
+                    </div>
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-card" onclick="showSection('disponibilidade')">
+                            <div class="qa-icon">🏨</div>
+                            <h4>Verificar Disponibilidade</h4>
+                            <p>Consultar quartos disponíveis</p>
+                        </button>
+                        <button class="quick-action-card" onclick="showSection('reservas')">
+                            <div class="qa-icon">📅</div>
+                            <h4>Gerenciar Reservas</h4>
+                            <p>Confirmar ou cancelar reservas</p>
+                        </button>
+                        <button class="quick-action-card" onclick="showSection('calendario')">
+                            <div class="qa-icon">📆</div>
+                            <h4>Ver Calendário</h4>
+                            <p>Ocupação por período</p>
+                        </button>
+                        <button class="quick-action-card" onclick="showSection('relatorios')">
+                            <div class="qa-icon">📈</div>
+                            <h4>Gerar Relatório</h4>
+                            <p>Análise de desempenho</p>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recent Reservations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Reservas Recentes Pendentes</h3>
+                        <a href="#" onclick="showSection('reservas')" class="link-view-all">Ver todas →</a>
+                    </div>
+                    <div id="recentReservations"></div>
+                </div>
+
+                <!-- Today's Check-ins -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Check-ins de Hoje</h3>
+                    </div>
+                    <div id="todayCheckins"></div>
+                </div>
+            </div>
+
+            <!-- Reservas Section -->
+            <div id="reservas-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Reservas</h1>
+                        <p>Visualize, confirme e gerencie todas as reservas</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="filters-bar">
+                        <input 
+                            type="text" 
+                            id="searchInput" 
+                            placeholder="🔍 Buscar por cliente, hotel ou ID..." 
+                            class="search-input"
+                            oninput="filterReservations()"
+                        >
+                        <select id="typeFilter" class="filter-select" onchange="filterReservations()">
+                            <option value="all">📦 Todos os Tipos</option>
+                            <option value="hotel">🏨 Hotéis</option>
+                            <option value="package">📦 Pacotes</option>
+                        </select>
+                        <select id="statusFilter" class="filter-select" onchange="filterReservations()">
+                            <option value="all">Todos os Status</option>
+                            <option value="pending">⏰ Pendentes</option>
+                            <option value="confirmed">✓ Confirmadas</option>
+                            <option value="cancelled">✗ Canceladas</option>
+                        </select>
+                        <input 
+                            type="date" 
+                            id="dateFilter" 
+                            class="filter-select"
+                            onchange="filterReservations()"
+                        >
+                    </div>
+                    <div id="reservationsList"></div>
+                </div>
+            </div>
+
+            <!-- Disponibilidade Section -->
+            <div id="disponibilidade-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Disponibilidade de Hotéis</h1>
+                        <p>Consulte e gerencie a disponibilidade de quartos</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="availability-filters">
+                        <div class="form-group">
+                            <label>Data de Check-in</label>
+                            <input type="date" id="availCheckIn" class="form-input" onchange="checkAvailability()">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Check-out</label>
+                            <input type="date" id="availCheckOut" class="form-input" onchange="checkAvailability()">
+                        </div>
+                        <div class="form-group">
+                            <label>Hóspedes</label>
+                            <input type="number" id="availGuests" class="form-input" value="2" min="1" max="10" onchange="checkAvailability()">
+                        </div>
+                        <button class="btn-check-avail" onclick="checkAvailability()">
+                            🔍 Verificar Disponibilidade
+                        </button>
+                    </div>
+                </div>
+
+                <div id="availabilityResults"></div>
+            </div>
+
+            <!-- Calendário Section -->
+            <div id="calendario-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Calendário de Ocupação</h1>
+                        <p>Visualize as reservas por período</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="calendar-controls">
+                        <button class="btn-calendar-nav" onclick="changeMonth(-1)">← Anterior</button>
+                        <h3 id="calendarMonth"></h3>
+                        <button class="btn-calendar-nav" onclick="changeMonth(1)">Próximo →</button>
+                    </div>
+                    <div id="calendarView"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Legenda</h3>
+                    </div>
+                    <div class="calendar-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #10B981;"></div>
+                            <span>Disponível</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #F59E0B;"></div>
+                            <span>Reservado</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #EF4444;"></div>
+                            <span>Ocupado</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background: #3B82F6;"></div>
+                            <span>Check-in Hoje</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatórios Section -->
+            <div id="relatorios-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Relatórios e Estatísticas</h1>
+                        <p>Análise detalhada do desempenho</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="exportReport()">
+                        <span>📥</span>
+                        Exportar Relatório
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📊</div>
+                        <div class="stat-value" id="reportTotalReservas">0</div>
+                        <div class="stat-label">Total de Reservas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
+                        <div class="stat-value" id="reportReceita">0 Kz</div>
+                        <div class="stat-label">Receita Gerada</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">📈</div>
+                        <div class="stat-value" id="reportTaxaOcupacao">0%</div>
+                        <div class="stat-label">Taxa de Ocupação</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">⭐</div>
+                        <div class="stat-value" id="reportTicketMedio">0 Kz</div>
+                        <div class="stat-label">Ticket Médio</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Hotéis Mais Reservados</h3>
+                    </div>
+                    <div id="topHotels"></div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Pacotes Mais Vendidos</h3>
+                    </div>
+                    <div id="topPackages"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Reservation Details Modal -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes da Reserva</h3>
+                <button class="modal-close" onclick="closeModal('reservationModal')">×</button>
+            </div>
+            <div id="reservationDetails"></div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header no-print">
+                <h3 class="modal-title">Fatura / Recibo</h3>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="printInvoice()">
+                        <span>🖨️</span> Imprimir
+                    </button>
+                    <button class="modal-close" onclick="closeModal('invoiceModal')">×</button>
+                </div>
+            </div>
+            <div id="invoiceContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-data.js"></script>
+    <script src="employee-dashboard.js"></script>
+</body>
+</html>

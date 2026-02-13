@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin - Juzzs</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link rel="stylesheet" href="employee-styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="logo.png" alt="Juzzs Logo" width="40px">
+                <div>
+                    <h2>Juzzs</h2>
+                    <span>Admin</span>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showSection('inicio')" class="active">
+                        <span class="icon">📊</span>
+                        <span>Visão Geral</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('reservas')">
+                        <span class="icon">📅</span>
+                        <span>Reservas</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('disponibilidade')">
+                        <span class="icon">🏨</span>
+                        <span>Disponibilidade</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('clientes')">
+                        <span class="icon">👥</span>
+                        <span>Clientes</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('funcionarios')">
+                        <span class="icon">👔</span>
+                        <span>Funcionários</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('relatorios')">
+                        <span class="icon">📈</span>
+                        <span>Relatórios</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('configuracoes')">
+                        <span class="icon">⚙️</span>
+                        <span>Configurações</span>
+                    </a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar" style="background: linear-gradient(135deg, #8B5CF6, #6366F1);"></div>
+                    <div class="user-details">
+                        <h4 id="userName"></h4>
+                        <p>Administrador</p>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <span>🚪</span>
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Início Section -->
+            <div id="inicio-section" class="section active">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Painel Administrativo</h1>
+                        <p>Visão geral completa do sistema</p>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
+                        </div>
+                        <div class="stat-value" id="totalReceita">0 Kz</div>
+                        <div class="stat-label">Receita Total</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="showSection('reservas')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📅</div>
+                        </div>
+                        <div class="stat-value" id="totalReservas">0</div>
+                        <div class="stat-label">Total Reservas</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="showSection('clientes')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">👥</div>
+                        </div>
+                        <div class="stat-value" id="totalClientes">0</div>
+                        <div class="stat-label">Clientes</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="showSection('funcionarios')">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">👔</div>
+                        </div>
+                        <div class="stat-value" id="totalFuncionarios">0</div>
+                        <div class="stat-label">Funcionários</div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats -->
+                <div class="quick-stats-grid">
+                    <div class="quick-stat-card">
+                        <h4>Reservas Pendentes</h4>
+                        <p class="stat-number" id="reservasPendentes">0</p>
+                        <button class="btn-quick" onclick="filterReservationsBy('pending')">Ver →</button>
+                    </div>
+                    <div class="quick-stat-card">
+                        <h4>Clientes Ativos</h4>
+                        <p class="stat-number" id="clientesAtivos">0</p>
+                        <button class="btn-quick" onclick="showSection('clientes')">Ver →</button>
+                    </div>
+                    <div class="quick-stat-card">
+                        <h4>Taxa de Ocupação</h4>
+                        <p class="stat-number" id="taxaOcupacao">0%</p>
+                        <button class="btn-quick" onclick="showSection('disponibilidade')">Ver →</button>
+                    </div>
+                    <div class="quick-stat-card">
+                        <h4>Ticket Médio</h4>
+                        <p class="stat-number" id="ticketMedio">0 Kz</p>
+                        <button class="btn-quick" onclick="showSection('relatorios')">Ver →</button>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Atividades Recentes</h3>
+                        <a href="#" onclick="showSection('reservas')" class="link-view-all">Ver todas →</a>
+                    </div>
+                    <div id="recentActivity"></div>
+                </div>
+            </div>
+
+            <!-- Reservas Section -->
+            <div id="reservas-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Reservas</h1>
+                        <p>Visualize e gerencie todas as reservas do sistema</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="filters-bar">
+                        <input 
+                            type="text" 
+                            id="searchReservation" 
+                            placeholder="🔍 Buscar por cliente, hotel ou ID..." 
+                            class="search-input"
+                            oninput="filterReservations()"
+                        >
+                        <select id="typeFilterRes" class="filter-select" onchange="filterReservations()">
+                            <option value="all">📦 Todos os Tipos</option>
+                            <option value="hotel">🏨 Hotéis</option>
+                            <option value="package">📦 Pacotes</option>
+                        </select>
+                        <select id="reservationStatusFilter" class="filter-select" onchange="filterReservations()">
+                            <option value="all">Todos os Status</option>
+                            <option value="pending">⏰ Pendentes</option>
+                            <option value="confirmed">✓ Confirmadas</option>
+                            <option value="cancelled">✗ Canceladas</option>
+                        </select>
+                    </div>
+                    <div id="reservationsList"></div>
+                </div>
+            </div>
+
+            <!-- Disponibilidade Section -->
+            <div id="disponibilidade-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Disponibilidade de Hotéis</h1>
+                        <p>Consulte e gerencie a disponibilidade de quartos</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="availability-filters">
+                        <div class="form-group">
+                            <label>Data de Check-in</label>
+                            <input type="date" id="availCheckInAdmin" class="form-input" onchange="checkAvailabilityAdmin()">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Check-out</label>
+                            <input type="date" id="availCheckOutAdmin" class="form-input" onchange="checkAvailabilityAdmin()">
+                        </div>
+                        <div class="form-group">
+                            <label>Hóspedes</label>
+                            <input type="number" id="availGuestsAdmin" class="form-input" value="2" min="1" max="10" onchange="checkAvailabilityAdmin()">
+                        </div>
+                        <button class="btn-check-avail" onclick="checkAvailabilityAdmin()">
+                            🔍 Verificar Disponibilidade
+                        </button>
+                    </div>
+                </div>
+
+                <div id="availabilityResultsAdmin"></div>
+            </div>
+
+            <!-- Clientes Section -->
+            <div id="clientes-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Clientes</h1>
+                        <p>Gerencie todos os clientes do sistema</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="filters-bar">
+                        <input 
+                            type="text" 
+                            id="searchClient" 
+                            placeholder="🔍 Buscar cliente..." 
+                            class="search-input"
+                            oninput="filterClients()"
+                        >
+                        <select id="clientStatusFilter" class="filter-select" onchange="filterClients()">
+                            <option value="all">Todos os Status</option>
+                            <option value="active">✓ Ativos</option>
+                            <option value="blocked">🚫 Bloqueados</option>
+                        </select>
+                    </div>
+                    <div id="clientsList"></div>
+                </div>
+            </div>
+
+            <!-- Funcionários Section -->
+            <div id="funcionarios-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Funcionários</h1>
+                        <p>Adicione e gerencie funcionários do sistema</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="openAddEmployeeModal()">
+                        <span>➕</span>
+                        Adicionar Funcionário
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div id="employeesList"></div>
+                </div>
+            </div>
+
+            <!-- Relatórios Section -->
+            <div id="relatorios-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Relatórios e Análises</h1>
+                        <p>Análise detalhada do desempenho</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="exportReportAdmin()">
+                        <span>📥</span>
+                        Exportar Relatório
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
+                        <div class="stat-value" id="reportReceitaTotal">0 Kz</div>
+                        <div class="stat-label">Receita Total</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📊</div>
+                        <div class="stat-value" id="reportTotalReservasAdmin">0</div>
+                        <div class="stat-label">Total de Reservas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">📈</div>
+                        <div class="stat-value" id="reportTaxaConversao">0%</div>
+                        <div class="stat-label">Taxa de Conversão</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">⭐</div>
+                        <div class="stat-value" id="reportTicketMedioAdmin">0 Kz</div>
+                        <div class="stat-label">Ticket Médio</div>
+                    </div>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top 5 Hotéis</h3>
+                        </div>
+                        <div id="topHotelsAdmin"></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Top 5 Pacotes</h3>
+                        </div>
+                        <div id="topPackagesAdmin"></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Reservas por Mês</h3>
+                    </div>
+                    <div id="monthlyChart"></div>
+                </div>
+            </div>
+
+            <!-- Configurações Section -->
+            <div id="configuracoes-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Configurações do Sistema</h1>
+                        <p>Gerencie as configurações gerais</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="config-section">
+                        <h3>Informações da Empresa</h3>
+                        <div class="config-grid">
+                            <div class="form-group">
+                                <label>Nome da Empresa</label>
+                                <input type="text" class="form-input" value="Juzzs Travel & Hospitality" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Email de Contato</label>
+                                <input type="email" class="form-input" value="contato@juzzs.ao" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Telefone</label>
+                                <input type="tel" class="form-input" value="+244 935 144 360" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>Endereço</label>
+                                <input type="text" class="form-input" value="Menongue, Angola" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="config-section">
+                        <h3>Ações do Sistema</h3>
+                        <div class="config-actions">
+                            <button class="btn-config-action danger" onclick="clearAllData()">
+                                🗑️ Limpar Todos os Dados
+                            </button>
+                            <button class="btn-config-action" onclick="exportSystemData()">
+                                📥 Exportar Dados do Sistema
+                            </button>
+                            <button class="btn-config-action" onclick="viewSystemLogs()">
+                                📋 Ver Logs do Sistema
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    
+    <!-- Add Employee Modal -->
+    <div id="addEmployeeModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Novo Funcionário</h3>
+                <button class="modal-close" onclick="closeModal('addEmployeeModal')">×</button>
+            </div>
+            
+            <form id="addEmployeeForm">
+                <div class="form-group">
+                    <label for="empName">Nome Completo</label>
+                    <input type="text" id="empName" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="empEmail">Email</label>
+                    <input type="email" id="empEmail" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="empPhone">Telefone</label>
+                    <input type="tel" id="empPhone" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="empPassword">Senha</label>
+                    <input type="password" id="empPassword" class="form-input" required minlength="6">
+                </div>
+                
+                <button type="submit" class="btn-submit">Adicionar Funcionário</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Editar Usuário</h3>
+                <button class="modal-close" onclick="closeModal('editUserModal')">×</button>
+            </div>
+            
+            <form id="editUserForm">
+                <input type="hidden" id="editUserId">
+                
+                <div class="form-group">
+                    <label for="editUserName">Nome Completo</label>
+                    <input type="text" id="editUserName" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserEmail">Email</label>
+                    <input type="email" id="editUserEmail" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserPhone">Telefone</label>
+                    <input type="tel" id="editUserPhone" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="editUserPassword">Nova Senha (deixe em branco para manter)</label>
+                    <input type="password" id="editUserPassword" class="form-input" minlength="6">
+                </div>
+                
+                <button type="submit" class="btn-submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reservation Details Modal (Reusing from employee dashboard) -->
+    <div id="reservationModalAdmin" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes da Reserva</h3>
+                <button class="modal-close" onclick="closeModal('reservationModalAdmin')">×</button>
+            </div>
+            <div id="reservationDetailsAdmin"></div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div id="invoiceModalAdmin" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header no-print">
+                <h3 class="modal-title">Fatura / Recibo</h3>
+                <div class="modal-actions">
+                    <button class="btn-secondary" onclick="printInvoiceAdmin()">
+                        <span>🖨️</span> Imprimir
+                    </button>
+                    <button class="modal-close" onclick="closeModal('invoiceModalAdmin')">×</button>
+                </div>
+            </div>
+            <div id="invoiceContentAdmin"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-data.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

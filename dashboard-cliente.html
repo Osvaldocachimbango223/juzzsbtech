@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Cliente - Juzzs</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <img src="logo.png" alt="Juzzs Logo" width="40px">
+                <div>
+                    <h2>Juzzs</h2>
+                    <span>Travel</span>
+                </div>
+            </div>
+
+            <nav>
+                <ul class="sidebar-menu">
+                    <li><a href="#" onclick="showSection('inicio')" class="active">
+                        <span class="icon">🏠</span>
+                        <span>Início</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('explorar')">
+                        <span class="icon">🗺️</span>
+                        <span>Explorar Destinos</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('hoteis')">
+                        <span class="icon">🏨</span>
+                        <span>Hotéis</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('pacotes')">
+                        <span class="icon">📦</span>
+                        <span>Pacotes</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('reservas')">
+                        <span class="icon">📅</span>
+                        <span>Minhas Reservas</span>
+                    </a></li>
+                    <li><a href="#" onclick="showSection('perfil')">
+                        <span class="icon">👤</span>
+                        <span>Perfil</span>
+                    </a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar"></div>
+                    <div class="user-details">
+                        <h4 id="userName"></h4>
+                        <p>Cliente</p>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">
+                    <span>🚪</span>
+                    Sair
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Início Section -->
+            <div id="inicio-section" class="section active">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Bem-vindo de volta, <span id="welcomeName"></span>!</h1>
+                        <p>Explore nossos destinos e reserve sua próxima aventura em Angola</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="showSection('hoteis')">
+                        <span>🔍</span>
+                        Explorar Hotéis
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">📅</div>
+                        </div>
+                        <div class="stat-value" id="totalReservas">0</div>
+                        <div class="stat-label">Reservas Realizadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">⏰</div>
+                        </div>
+                        <div class="stat-value" id="reservasPendentes">0</div>
+                        <div class="stat-label">Pendentes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">✓</div>
+                        </div>
+                        <div class="stat-value" id="reservasConfirmadas">0</div>
+                        <div class="stat-label">Confirmadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(217, 119, 6, 0.1); color: #D97706;">⭐</div>
+                        </div>
+                        <div class="stat-value">VIP</div>
+                        <div class="stat-label">Status</div>
+                    </div>
+                </div>
+
+                <!-- Featured Destinations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Destinos em Destaque</h3>
+                        <a href="#" onclick="showSection('explorar')" class="link-view-all">Ver todos →</a>
+                    </div>
+                    <div id="featuredDestinations"></div>
+                </div>
+
+                <!-- Quick Services -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Serviços Disponíveis</h3>
+                    </div>
+                    <div class="services-quick-grid">
+                        <div class="service-quick-card">
+                            <div class="service-icon">🏨</div>
+                            <h4>Hospedagem</h4>
+                            <p>Quartos confortáveis e modernos</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon">🚗</div>
+                            <h4>Transporte</h4>
+                            <p>Veículos premium e seguros</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon">🗺️</div>
+                            <h4>Passeios</h4>
+                            <p>Tours exclusivos guiados</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon">🍽️</div>
+                            <h4>Gastronomia</h4>
+                            <p>Experiências culinárias únicas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explorar Destinos Section -->
+            <div id="explorar-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Explorar Destinos</h1>
+                        <p>Descubra as maravilhas naturais e culturais de Angola</p>
+                    </div>
+                </div>
+
+                <div id="destinationsList"></div>
+            </div>
+
+            <!-- Hotéis Section -->
+            <div id="hoteis-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Nossos Hotéis</h1>
+                        <p>Escolha a acomodação perfeita para sua estadia</p>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="btn-filter active" onclick="filterHotels('all')">Todos</button>
+                        <button class="btn-filter" onclick="filterHotels('premium')">Premium</button>
+                        <button class="btn-filter" onclick="filterHotels('standard')">Standard</button>
+                        <button class="btn-filter" onclick="filterHotels('lodge')">Lodge</button>
+                    </div>
+                </div>
+
+                <div id="hotelsList"></div>
+            </div>
+
+            <!-- Pacotes Section -->
+            <div id="pacotes-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Pacotes Turísticos</h1>
+                        <p>Pacotes completos com hospedagem, passeios e experiências</p>
+                    </div>
+                </div>
+
+                <div id="packagesList"></div>
+            </div>
+
+            <!-- Reservas Section -->
+            <div id="reservas-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Minhas Reservas</h1>
+                        <p>Acompanhe todas as suas reservas de hotéis e pacotes</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="showSection('hoteis')">
+                        <span>➕</span>
+                        Nova Reserva
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div id="reservationsList"></div>
+                </div>
+            </div>
+
+            <!-- Perfil Section -->
+            <div id="perfil-section" class="section">
+                <div class="dashboard-header">
+                    <h1>Meu Perfil</h1>
+                    <p>Informações da sua conta</p>
+                </div>
+
+                <div class="card">
+                    <div class="profile-header">
+                        <div class="user-avatar-large" id="profileAvatar"></div>
+                        <div>
+                            <h2 id="profileName"></h2>
+                            <p id="profileEmail"></p>
+                            <span class="badge badge-success">Cliente Ativo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="profile-info-grid">
+                        <div class="profile-info-item">
+                            <label>Telefone</label>
+                            <div id="profilePhone"></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <label>Tipo de Conta</label>
+                            <div>Cliente Premium</div>
+                        </div>
+                        <div class="profile-info-item">
+                            <label>Membro desde</label>
+                            <div id="profileCreated"></div>
+                        </div>
+                        <div class="profile-info-item">
+                            <label>Total Gasto</label>
+                            <div id="totalSpent">0 Kz</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Hotel Booking Modal -->
+    <div id="hotelBookingModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Reservar Hotel</h3>
+                <button class="modal-close" onclick="closeModal('hotelBookingModal')">×</button>
+            </div>
+            
+            <div id="selectedHotelInfo"></div>
+            
+            <form id="hotelBookingForm">
+                <input type="hidden" id="selectedHotelId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="checkInHotel">Data de Check-in</label>
+                        <input type="date" id="checkInHotel" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="checkOutHotel">Data de Check-out</label>
+                        <input type="date" id="checkOutHotel" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="roomsHotel">Número de Quartos</label>
+                        <input type="number" id="roomsHotel" min="1" max="5" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="guestsHotel">Número de Hóspedes</label>
+                        <input type="number" id="guestsHotel" min="1" max="10" value="2" required>
+                    </div>
+                </div>
+                
+                <div class="booking-summary">
+                    <div class="summary-row">
+                        <span>Diárias:</span>
+                        <span id="nightsCount">0 noites</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Preço por noite:</span>
+                        <span id="pricePerNight">0 Kz</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="totalPriceHotel">0 Kz</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Package Booking Modal -->
+    <div id="packageBookingModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reservar Pacote</h3>
+                <button class="modal-close" onclick="closeModal('packageBookingModal')">×</button>
+            </div>
+            
+            <div id="selectedPackageInfo"></div>
+            
+            <form id="packageBookingForm">
+                <input type="hidden" id="selectedPackageId">
+                
+                <div class="form-group">
+                    <label for="checkInPackage">Data de Início</label>
+                    <input type="date" id="checkInPackage" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="guestsPackage">Número de Pessoas</label>
+                    <input type="number" id="guestsPackage" min="1" max="10" value="1" required>
+                </div>
+                
+                <div class="booking-summary">
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="totalPricePackage">0 Kz</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-submit">Confirmar Reserva</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Reservation Details Modal -->
+    <div id="reservationDetailsModal" class="modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Detalhes da Reserva</h3>
+                <button class="modal-close" onclick="closeModal('reservationDetailsModal')">×</button>
+            </div>
+            
+            <div id="reservationDetailsContent"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="dashboard-data.js"></script>
+    <script src="dashboard-cliente.js"></script>
+</body>
+</html>
