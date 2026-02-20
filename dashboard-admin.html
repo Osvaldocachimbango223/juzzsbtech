@@ -25,31 +25,31 @@
             <nav>
                 <ul class="sidebar-menu">
                     <li><a href="#" onclick="showSection('inicio')" class="active">
-                        <span class="icon">📊</span>
+                        <span class="icon"></span>
                         <span>Visão Geral</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('reservas')">
-                        <span class="icon">📅</span>
+                        <span class="icon"></span>
                         <span>Reservas</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('disponibilidade')">
-                        <span class="icon">🏨</span>
+                        <span class="icon"></span>
                         <span>Disponibilidade</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('clientes')">
-                        <span class="icon">👥</span>
+                        <span class="icon"></span>
                         <span>Clientes</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('funcionarios')">
-                        <span class="icon">👔</span>
+                        <span class="icon"></span>
                         <span>Funcionários</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('relatorios')">
-                        <span class="icon">📈</span>
+                        <span class="icon"></span>
                         <span>Relatórios</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('configuracoes')">
-                        <span class="icon">⚙️</span>
+                        <span class="icon"></span>
                         <span>Configurações</span>
                     </a></li>
                 </ul>
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <button class="btn-logout" onclick="logout()">
-                    <span>🚪</span>
+                    <span></span>
                     Sair
                 </button>
             </div>
@@ -84,28 +84,28 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;"></div>
                         </div>
                         <div class="stat-value" id="totalReceita">0 Kz</div>
                         <div class="stat-label">Receita Total</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('reservas')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📅</div>
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;"></div>
                         </div>
                         <div class="stat-value" id="totalReservas">0</div>
                         <div class="stat-label">Total Reservas</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('clientes')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">👥</div>
+                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;"></div>
                         </div>
                         <div class="stat-value" id="totalClientes">0</div>
                         <div class="stat-label">Clientes</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('funcionarios')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">👔</div>
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;"></div>
                         </div>
                         <div class="stat-value" id="totalFuncionarios">0</div>
                         <div class="stat-label">Funcionários</div>
@@ -160,14 +160,14 @@
                         <input 
                             type="text" 
                             id="searchReservation" 
-                            placeholder="🔍 Buscar por cliente, hotel ou ID..." 
+                            placeholder="Buscar por cliente, hotel ou ID..." 
                             class="search-input"
                             oninput="filterReservations()"
                         >
                         <select id="typeFilterRes" class="filter-select" onchange="filterReservations()">
-                            <option value="all">📦 Todos os Tipos</option>
-                            <option value="hotel">🏨 Hotéis</option>
-                            <option value="package">📦 Pacotes</option>
+                            <option value="all">Todos os Tipos</option>
+                            <option value="hotel">Hotéis</option>
+                            <option value="package">Pacotes</option>
                         </select>
                         <select id="reservationStatusFilter" class="filter-select" onchange="filterReservations()">
                             <option value="all">Todos os Status</option>
@@ -204,7 +204,7 @@
                             <input type="number" id="availGuestsAdmin" class="form-input" value="2" min="1" max="10" onchange="checkAvailabilityAdmin()">
                         </div>
                         <button class="btn-check-avail" onclick="checkAvailabilityAdmin()">
-                            🔍 Verificar Disponibilidade
+                             Verificar Disponibilidade
                         </button>
                     </div>
                 </div>
@@ -226,7 +226,7 @@
                         <input 
                             type="text" 
                             id="searchClient" 
-                            placeholder="🔍 Buscar cliente..." 
+                            placeholder=" Buscar cliente..." 
                             class="search-input"
                             oninput="filterClients()"
                         >
@@ -248,7 +248,7 @@
                         <p>Adicione e gerencie funcionários do sistema</p>
                     </div>
                     <button class="btn-primary-dash" onclick="openAddEmployeeModal()">
-                        <span>➕</span>
+                        <span></span>
                         Adicionar Funcionário
                     </button>
                 </div>
