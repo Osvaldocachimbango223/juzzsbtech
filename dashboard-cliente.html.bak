@@ -70,32 +70,82 @@
             <div id="inicio-section" class="section active">
                 <div class="dashboard-header">
                     <div>
-                        <h1>Bem-vindo, <span id="welcomeName"></span>!</h1>
-                        <p>O que deseja fazer hoje?</p>
+                        <h1>Bem-vindo de volta, <span id="welcomeName"></span>!</h1>
+                        <p>Explore nossos destinos e reserve sua próxima aventura em Angola</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="showSection('hoteis')">
+                        <span>🔍</span>
+                        Explorar Hotéis
+                    </button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">📅</div>
+                        </div>
+                        <div class="stat-value" id="totalReservas">0</div>
+                        <div class="stat-label">Reservas Realizadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">⏰</div>
+                        </div>
+                        <div class="stat-value" id="reservasPendentes">0</div>
+                        <div class="stat-label">Pendentes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">✓</div>
+                        </div>
+                        <div class="stat-value" id="reservasConfirmadas">0</div>
+                        <div class="stat-label">Confirmadas</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-icon" style="background: rgba(217, 119, 6, 0.1); color: #D97706;">⭐</div>
+                        </div>
+                        <div class="stat-value">VIP</div>
+                        <div class="stat-label">Status</div>
                     </div>
                 </div>
 
-                <div class="quick-actions-grid">
-                    <button class="quick-action-card" onclick="showSection('hoteis')">
-                        <span class="qa-icon">🏨</span>
-                        <h4>Hotéis</h4>
-                        <p>Ver alojamentos disponíveis</p>
-                    </button>
-                    <button class="quick-action-card" onclick="showSection('pacotes')">
-                        <span class="qa-icon">🗺️</span>
-                        <h4>Pacotes</h4>
-                        <p>Explorar pacotes turísticos</p>
-                    </button>
-                    <button class="quick-action-card" onclick="showSection('reservas')">
-                        <span class="qa-icon">📋</span>
-                        <h4>Minhas Reservas</h4>
-                        <p>Acompanhar as suas reservas</p>
-                    </button>
-                    <button class="quick-action-card" onclick="showSection('explorar')">
-                        <span class="qa-icon">🌍</span>
-                        <h4>Destinos</h4>
-                        <p>Descobrir Angola</p>
-                    </button>
+                <!-- Featured Destinations -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Destinos em Destaque</h3>
+                        <a href="#" onclick="showSection('explorar')" class="link-view-all">Ver todos →</a>
+                    </div>
+                    <div id="featuredDestinations"></div>
+                </div>
+
+                <!-- Quick Services -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Serviços Disponíveis</h3>
+                    </div>
+                    <div class="services-quick-grid">
+                        <div class="service-quick-card">
+                            <div class="service-icon"></div>
+                            <h4>Hospedagem</h4>
+                            <p>Quartos confortáveis e modernos</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon"></div>
+                            <h4>Transporte</h4>
+                            <p>Veículos premium e seguros</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon"></div>
+                            <h4>Passeios</h4>
+                            <p>Tours exclusivos guiados</p>
+                        </div>
+                        <div class="service-quick-card">
+                            <div class="service-icon"></div>
+                            <h4>Gastronomia</h4>
+                            <p>Experiências culinárias únicas</p>
+                        </div>
+                    </div>
                 </div>
             </div>
 

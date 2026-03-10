@@ -90,31 +90,12 @@
 
     <script src="script.js"></script>
     <script>
-        // Login form handler
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
-            const user = users.find(u => u.email === email && u.password === password);
-            
-            if (user) {
-                localStorage.setItem('juzzs_current_user', JSON.stringify(user));
-                
-                // Redirect based on role
-                if (user.role === 'admin') {
-                    window.location.href = 'dashboard-admin.html';
-                } else if (user.role === 'employee') {
-                    window.location.href = 'dashboard-funcionario.html';
-                } else {
-                    window.location.href = 'dashboard-cliente.html';
-                }
-            } else {
-                showMessage('Email ou senha incorretos', 'error');
-            }
-        });
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         function showMessage(message, type) {
             const messageDiv = document.getElementById('loginMessage');
@@ -126,6 +107,49 @@
             const input = document.getElementById(inputId);
             input.type = input.type === 'password' ? 'text' : 'password';
         }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
+            const passwordHash = await hashPassword(password);
+
+            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
+
+            // Support both legacy plain-text passwords and new hashed passwords
+            const user = users.find(u =>
+                u.email === email &&
+                (u.passwordHash === passwordHash || u.password === password)
+            );
+
+            if (user) {
+                // Migrate legacy plain-text password to hash on login
+                if (user.password && !user.passwordHash) {
+                    user.passwordHash = passwordHash;
+                    delete user.password;
+                    const updatedUsers = users.map(u => u.email === email ? user : u);
+                    localStorage.setItem('juzzs_users', JSON.stringify(updatedUsers));
+                }
+
+                // Store session without password hash
+                const sessionUser = { ...user };
+                delete sessionUser.passwordHash;
+                delete sessionUser.password;
+                localStorage.setItem('juzzs_current_user', JSON.stringify(sessionUser));
+
+                if (user.role === 'admin') {
+                    window.location.href = 'dashboard-admin.html';
+                } else if (user.role === 'employee') {
+                    window.location.href = 'dashboard-funcionario.html';
+                } else {
+                    window.location.href = 'dashboard-cliente.html';
+                }
+            } else {
+                showMessage('Email ou senha incorretos', 'error');
+            }
+        });
     </script>
 </body>
 </html>

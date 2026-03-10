@@ -108,66 +108,17 @@
 
     <script src="script.js"></script>
     <script>
-        // Initialize with default admin if no users exist
-        if (!localStorage.getItem('juzzs_users')) {
-            const defaultUsers = [
-                {
-                    id: generateId(),
-                    name: 'Admin Juzzs',
-                    email: 'admin@juzzs.ao',
-                    password: 'admin123',
-                    phone: '+244 923 456 789',
-                    role: 'admin',
-                    createdAt: new Date().toISOString()
-                }
-            ];
-            localStorage.setItem('juzzs_users', JSON.stringify(defaultUsers));
+        // ── Helpers ──────────────────────────────────────────────────
+        function generateId() {
+            return Math.random().toString(36).substr(2, 9);
         }
 
-        // Register form handler
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            
-            // Validate password match
-            if (password !== confirmPassword) {
-                showMessage('As senhas não coincidem', 'error');
-                return;
-            }
-            
-            // Check if email already exists
-            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
-            if (users.find(u => u.email === email)) {
-                showMessage('Este email já está cadastrado', 'error');
-                return;
-            }
-            
-            // Create new user
-            const newUser = {
-                id: generateId(),
-                name: name,
-                email: email,
-                phone: phone,
-                password: password,
-                role: 'client',
-                createdAt: new Date().toISOString()
-            };
-            
-            users.push(newUser);
-            localStorage.setItem('juzzs_users', JSON.stringify(users));
-            localStorage.setItem('juzzs_current_user', JSON.stringify(newUser));
-            
-            showMessage('Conta criada com sucesso! Redirecionando...', 'success');
-            
-            setTimeout(() => {
-                window.location.href = 'dashboard-cliente.html';
-            }, 1500);
-        });
+        async function hashPassword(password) {
+            const msgBuffer = new TextEncoder().encode(password);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         function showMessage(message, type) {
             const messageDiv = document.getElementById('registerMessage');
@@ -180,9 +131,74 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        function generateId() {
-            return Math.random().toString(36).substr(2, 9);
-        }
+        // ── Initialize default admin (password hashed) ───────────────
+        (async function initAdmin() {
+            if (!localStorage.getItem('juzzs_users')) {
+                const hashedPwd = await hashPassword('admin123');
+                const defaultUsers = [
+                    {
+                        id: generateId(),
+                        name: 'Admin Juzzs',
+                        email: 'admin@juzzs.ao',
+                        passwordHash: hashedPwd,
+                        phone: '+244 923 456 789',
+                        role: 'admin',
+                        createdAt: new Date().toISOString()
+                    }
+                ];
+                localStorage.setItem('juzzs_users', JSON.stringify(defaultUsers));
+            }
+        })();
+
+        // ── Register form handler ────────────────────────────────────
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const phone = document.getElementById('phone').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (password !== confirmPassword) {
+                showMessage('As senhas não coincidem', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showMessage('A senha deve ter pelo menos 6 caracteres', 'error');
+                return;
+            }
+
+            const users = JSON.parse(localStorage.getItem('juzzs_users')) || [];
+            if (users.find(u => u.email === email)) {
+                showMessage('Este email já está cadastrado', 'error');
+                return;
+            }
+
+            const passwordHash = await hashPassword(password);
+
+            const newUser = {
+                id: generateId(),
+                name,
+                email,
+                phone,
+                passwordHash,
+                role: 'client',
+                createdAt: new Date().toISOString()
+            };
+
+            users.push(newUser);
+            localStorage.setItem('juzzs_users', JSON.stringify(users));
+
+            // Store session without password hash
+            const sessionUser = { ...newUser };
+            delete sessionUser.passwordHash;
+            localStorage.setItem('juzzs_current_user', JSON.stringify(sessionUser));
+
+            showMessage('Conta criada com sucesso! Redirecionando...', 'success');
+            setTimeout(() => { window.location.href = 'dashboard-cliente.html'; }, 1500);
+        });
     </script>
 </body>
 </html>

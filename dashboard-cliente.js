@@ -9,11 +9,9 @@ if (!currentUser || currentUser.role !== 'client') {
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     loadUserInfo();
-    loadStats();
-    loadFeaturedDestinations();
-    loadDestinations();
     loadHotels();
     loadPackages();
+    loadDestinations();
     loadReservations();
     
     // Set minimum dates

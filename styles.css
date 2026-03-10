@@ -2008,3 +2008,64 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ── WhatsApp Floating Button ─────────────────────────────── */
+.whatsapp-float {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    background: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(37, 211, 102, 0.45);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6);
+}
+.whatsapp-tooltip {
+    position: absolute;
+    right: 72px;
+    background: #1a1a1a;
+    color: #fff;
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+.whatsapp-float:hover .whatsapp-tooltip {
+    opacity: 1;
+}
+
+/* ── Navbar scrolled state ────────────────────────────────── */
+.navbar.scrolled {
+    background: rgba(10, 20, 40, 0.97);
+    box-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+
+/* ── Mobile nav active state ──────────────────────────────── */
+@media (max-width: 768px) {
+    .nav-links.active {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(10, 20, 40, 0.98);
+        padding: 20px;
+        gap: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+}

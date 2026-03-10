@@ -57,12 +57,23 @@ function updateDashboardStats() {
     const activeClients = clients.filter(c => !c.blocked).length;
     const avgTicket = confirmedReservations.length > 0 ? totalRevenue / confirmedReservations.length : 0;
     
-    // Calculate occupancy rate
-    const totalRoomDays = hotels.length * 10 * 30; // hotels * rooms * days
-    const occupiedRoomDays = confirmedReservations
-        .filter(r => r.type === 'hotel')
-        .reduce((sum, r) => sum + (r.rooms * r.nights), 0);
-    const occupancyRate = ((occupiedRoomDays / totalRoomDays) * 100).toFixed(1);
+    // Calculate occupancy rate based on real reservations
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today);
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+
+    const recentHotelReservations = confirmedReservations.filter(r => {
+        if (r.type !== 'hotel') return false;
+        const checkIn = new Date(r.checkIn);
+        return checkIn >= thirtyDaysAgo && checkIn <= today;
+    });
+
+    const occupiedRoomDays = recentHotelReservations.reduce((sum, r) => sum + ((r.rooms || 1) * (r.nights || 1)), 0);
+    // Total capacity: sum of all room types across hotels × 30 days
+    const totalRoomCapacity = hotels.reduce((sum, h) => sum + h.roomTypes.length * 30, 0);
+    const occupancyRate = totalRoomCapacity > 0
+        ? ((occupiedRoomDays / totalRoomCapacity) * 100).toFixed(1)
+        : '0.0';
     
     document.getElementById('totalReceita').textContent = formatCurrency(totalRevenue);
     document.getElementById('totalReservas').textContent = allReservations.length;
