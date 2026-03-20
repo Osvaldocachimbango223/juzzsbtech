@@ -43,6 +43,10 @@
                         <span class="icon">📈</span>
                         <span>Relatórios</span>
                     </a></li>
+                    <li><a href="#" onclick="showSection('quartos')">
+                        <span class="icon">🛏️</span>
+                        <span>Quartos</span>
+                    </a></li>
                 </ul>
             </nav>
 
@@ -132,6 +136,11 @@
                             <div class="qa-icon">📈</div>
                             <h4>Gerar Relatório</h4>
                             <p>Análise de desempenho</p>
+                        </button>
+                        <button class="quick-action-card" onclick="showSection('quartos')">
+                            <div class="qa-icon">🛏️</div>
+                            <h4>Quartos</h4>
+                            <p>Registar e gerir quartos</p>
                         </button>
                     </div>
                 </div>
@@ -319,7 +328,126 @@
                     <div id="topPackages"></div>
                 </div>
             </div>
+
+            <!-- Quartos Section (Funcionário) -->
+            <div id="quartos-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Quartos</h1>
+                        <p>Registe novos quartos e actualize o estado dos existentes</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="openQuartoModalFunc()">
+                        <span>🛏️</span> Registar Quarto
+                    </button>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card" style="padding:16px 20px;">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+                        <div class="form-group" style="margin:0;flex:2;min-width:180px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Hotel</label>
+                            <select id="qFuncFilterHotel" class="form-input" style="padding:8px 12px;" onchange="renderQuartosFunc()">
+                                <option value="all">Todos os Hotéis</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;flex:1;min-width:140px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Estado</label>
+                            <select id="qFuncFilterEstado" class="form-input" style="padding:8px 12px;" onchange="renderQuartosFunc()">
+                                <option value="all">Todos</option>
+                                <option value="disponivel">✅ Disponível</option>
+                                <option value="ocupado">🔴 Ocupado</option>
+                                <option value="reservado">📅 Reservado</option>
+                                <option value="manutencao">🔧 Manutenção</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;flex:2;min-width:180px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Pesquisar</label>
+                            <input type="text" id="qFuncFilterSearch" class="form-input" style="padding:8px 12px;" placeholder="Nº quarto, tipo..." oninput="renderQuartosFunc()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid" id="quartosStatsFunc"></div>
+
+                <!-- Cards de quartos -->
+                <div id="quartosCardsFunc" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;"></div>
+                <div id="quartosFuncEmpty" style="display:none;padding:60px;text-align:center;color:var(--text-secondary);">
+                    <div style="font-size:3.5rem;">🛏️</div>
+                    <p style="margin-top:10px;font-size:1rem;">Nenhum quarto encontrado. Registe o primeiro quarto!</p>
+                </div>
+            </div>
         </main>
+    </div>
+
+    <!-- Modal Registar/Editar Quarto (Funcionário) -->
+    <div id="quartoModalFunc" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="quartoModalTitleFunc">Registar Quarto</h3>
+                <button class="modal-close" onclick="closeModal('quartoModalFunc')">×</button>
+            </div>
+            <div style="padding:0 24px 24px;">
+                <div class="form-group">
+                    <label>Hotel</label>
+                    <select id="qFuncHotelId" class="form-input" required></select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Número do Quarto</label>
+                        <input type="text" id="qFuncNumero" class="form-input" placeholder="Ex: 101" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="qFuncTipo" class="form-input">
+                            <option value="Standard">Standard</option>
+                            <option value="Deluxe">Deluxe</option>
+                            <option value="Suite">Suite</option>
+                            <option value="Familiar">Familiar</option>
+                            <option value="Executive">Executive</option>
+                            <option value="Presidential">Presidential</option>
+                            <option value="Single">Single</option>
+                            <option value="Double">Double</option>
+                            <option value="Tenda Safari">Tenda Safari</option>
+                            <option value="Suite Panorâmica">Suite Panorâmica</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Capacidade</label>
+                        <input type="number" id="qFuncCapacidade" class="form-input" value="2" min="1" max="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Preço / Noite (Kz)</label>
+                        <input type="number" id="qFuncPreco" class="form-input" placeholder="15000" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Andar</label>
+                        <input type="text" id="qFuncAndar" class="form-input" placeholder="Ex: 1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="qFuncEstado" class="form-input">
+                        <option value="disponivel">✅ Disponível</option>
+                        <option value="ocupado">🔴 Ocupado</option>
+                        <option value="manutencao">🔧 Manutenção</option>
+                        <option value="reservado">📅 Reservado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição / Comodidades</label>
+                    <textarea id="qFuncDescricao" class="form-input" rows="3" placeholder="Ex: Ar-condicionado, TV, casa de banho privada..."></textarea>
+                </div>
+                <input type="hidden" id="qFuncEditId">
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;">
+                    <button class="btn-secondary" onclick="closeModal('quartoModalFunc')">Cancelar</button>
+                    <button class="btn-primary-dash" onclick="saveQuartoFunc()">💾 Guardar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Reservation Details Modal -->

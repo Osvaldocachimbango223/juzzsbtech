@@ -84,6 +84,8 @@ function updateDashboardStats() {
     document.getElementById('clientesAtivos').textContent = activeClients;
     document.getElementById('taxaOcupacao').textContent = occupancyRate + '%';
     document.getElementById('ticketMedio').textContent = formatCurrency(avgTicket);
+    const qCountEl = document.getElementById('quartosCount');
+    if (qCountEl) qCountEl.textContent = (JSON.parse(localStorage.getItem('juzzs_quartos')) || []).length;
 }
 
 // Load recent activity
@@ -1248,3 +1250,176 @@ function showToast(msg, type) {
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 3000);
 }
+
+// =====================================================
+// MÓDULO DE QUARTOS — ADMIN
+// =====================================================
+const QUARTOS_KEY = 'juzzs_quartos';
+
+function getQuartos() {
+    try { return JSON.parse(localStorage.getItem(QUARTOS_KEY)) || []; } catch { return []; }
+}
+function saveQuartos(list) {
+    localStorage.setItem(QUARTOS_KEY, JSON.stringify(list));
+}
+
+function initQuartosAdmin() {
+    // Preencher filtro de hotéis
+    const sel = document.getElementById('qFilterHotel');
+    if (sel) {
+        sel.innerHTML = '<option value="all">Todos os Hotéis</option>' +
+            hotels.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+    }
+    // Preencher select do modal
+    const modalSel = document.getElementById('qHotelId');
+    if (modalSel) {
+        modalSel.innerHTML = hotels.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+    }
+    renderQuartosAdmin();
+}
+
+function renderQuartosAdmin() {
+    const quartos = getQuartos();
+    const filterHotel = document.getElementById('qFilterHotel')?.value || 'all';
+    const filterEstado = document.getElementById('qFilterEstado')?.value || 'all';
+    const filterSearch = (document.getElementById('qFilterSearch')?.value || '').toLowerCase();
+
+    const filtered = quartos.filter(q => {
+        if (filterHotel !== 'all' && String(q.hotelId) !== filterHotel) return false;
+        if (filterEstado !== 'all' && q.estado !== filterEstado) return false;
+        if (filterSearch && !(`${q.numero} ${q.tipo} ${q.hotelNome}`).toLowerCase().includes(filterSearch)) return false;
+        return true;
+    });
+
+    // Stats
+    const statsEl = document.getElementById('quartosStatsAdmin');
+    if (statsEl) {
+        const total = quartos.length;
+        const disponiveis = quartos.filter(q => q.estado === 'disponivel').length;
+        const ocupados = quartos.filter(q => q.estado === 'ocupado').length;
+        const manutencao = quartos.filter(q => q.estado === 'manutencao').length;
+        statsEl.innerHTML = `
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">🛏️</div></div><div class="stat-value">${total}</div><div class="stat-label">Total Quartos</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;">✅</div></div><div class="stat-value">${disponiveis}</div><div class="stat-label">Disponíveis</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(239,68,68,.1);color:#EF4444;">🔴</div></div><div class="stat-value">${ocupados}</div><div class="stat-label">Ocupados</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">🔧</div></div><div class="stat-value">${manutencao}</div><div class="stat-label">Em Manutenção</div></div>
+        `;
+    }
+
+    const tbody = document.getElementById('quartosTableBodyAdmin');
+    const empty = document.getElementById('quartosEmptyAdmin');
+    if (!tbody) return;
+
+    if (filtered.length === 0) {
+        tbody.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    const estadoBadge = { disponivel:'<span class="status-badge status-confirmed">✅ Disponível</span>', ocupado:'<span class="status-badge status-cancelled">🔴 Ocupado</span>', manutencao:'<span class="status-badge" style="background:rgba(245,158,11,.1);color:#F59E0B;">🔧 Manutenção</span>', reservado:'<span class="status-badge status-pending">📅 Reservado</span>' };
+
+    tbody.innerHTML = filtered.map(q => `
+        <tr>
+            <td><strong>${q.hotelNome}</strong></td>
+            <td><strong>${q.numero}</strong></td>
+            <td>${q.tipo}</td>
+            <td>${q.andar || '—'}</td>
+            <td>${q.capacidade} pess.</td>
+            <td>${formatCurrency(q.preco)}</td>
+            <td>${estadoBadge[q.estado] || q.estado}</td>
+            <td style="font-size:12px;">${q.registadoPor || 'Admin'}<br><span style="color:var(--text-secondary);">${formatDate(q.criadoEm)}</span></td>
+            <td>
+                <button class="btn-action btn-view" title="Editar" onclick="editQuarto('${q.id}')">✏️</button>
+                <button class="btn-action btn-cancel" title="Eliminar" onclick="deleteQuarto('${q.id}')">🗑️</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function openQuartoModal(id) {
+    document.getElementById('qEditId').value = '';
+    document.getElementById('qNumero').value = '';
+    document.getElementById('qTipo').value = 'Standard';
+    document.getElementById('qCapacidade').value = 2;
+    document.getElementById('qPreco').value = '';
+    document.getElementById('qAndar').value = '';
+    document.getElementById('qEstado').value = 'disponivel';
+    document.getElementById('qDescricao').value = '';
+    document.getElementById('quartoModalTitle').textContent = 'Registar Quarto';
+    document.getElementById('quartoModal').classList.add('active');
+}
+
+function editQuarto(id) {
+    const q = getQuartos().find(x => x.id === id);
+    if (!q) return;
+    document.getElementById('qEditId').value = q.id;
+    document.getElementById('qHotelId').value = q.hotelId;
+    document.getElementById('qNumero').value = q.numero;
+    document.getElementById('qTipo').value = q.tipo;
+    document.getElementById('qCapacidade').value = q.capacidade;
+    document.getElementById('qPreco').value = q.preco;
+    document.getElementById('qAndar').value = q.andar || '';
+    document.getElementById('qEstado').value = q.estado;
+    document.getElementById('qDescricao').value = q.descricao || '';
+    document.getElementById('quartoModalTitle').textContent = 'Editar Quarto';
+    document.getElementById('quartoModal').classList.add('active');
+}
+
+function saveQuarto() {
+    const hotelId = parseInt(document.getElementById('qHotelId').value);
+    const numero = document.getElementById('qNumero').value.trim();
+    const tipo = document.getElementById('qTipo').value;
+    const capacidade = parseInt(document.getElementById('qCapacidade').value);
+    const preco = parseFloat(document.getElementById('qPreco').value);
+    const andar = document.getElementById('qAndar').value.trim();
+    const estado = document.getElementById('qEstado').value;
+    const descricao = document.getElementById('qDescricao').value.trim();
+    const editId = document.getElementById('qEditId').value;
+
+    if (!numero || isNaN(preco) || preco < 0) {
+        showToast('Preencha todos os campos obrigatórios.', 'error'); return;
+    }
+
+    const hotel = hotels.find(h => h.id === hotelId);
+    const quartos = getQuartos();
+
+    // Verificar número duplicado no mesmo hotel (excluindo edição)
+    const duplicado = quartos.find(q => q.hotelId === hotelId && q.numero === numero && q.id !== editId);
+    if (duplicado) { showToast(`Já existe o quarto nº ${numero} neste hotel.`, 'error'); return; }
+
+    const user = JSON.parse(localStorage.getItem('juzzs_current_user'));
+
+    if (editId) {
+        const idx = quartos.findIndex(q => q.id === editId);
+        if (idx > -1) {
+            quartos[idx] = { ...quartos[idx], hotelId, hotelNome: hotel?.name || '', numero, tipo, capacidade, preco, andar, estado, descricao, atualizadoEm: new Date().toISOString(), atualizadoPor: user?.name || 'Admin' };
+        }
+        showToast('Quarto actualizado com sucesso!', 'success');
+    } else {
+        quartos.push({ id: 'q_' + Date.now(), hotelId, hotelNome: hotel?.name || '', numero, tipo, capacidade, preco, andar, estado, descricao, registadoPor: user?.name || 'Admin', criadoEm: new Date().toISOString() });
+        showToast('Quarto registado com sucesso!', 'success');
+    }
+
+    saveQuartos(quartos);
+    closeModal('quartoModal');
+    renderQuartosAdmin();
+}
+
+function deleteQuarto(id) {
+    if (!confirm('Tem certeza que quer eliminar este quarto? Esta acção não pode ser revertida.')) return;
+    const quartos = getQuartos().filter(q => q.id !== id);
+    saveQuartos(quartos);
+    renderQuartosAdmin();
+    showToast('Quarto eliminado.', 'success');
+}
+
+// Hook into showSection to init quartos when navigating there
+const _origShowSectionAdmin = typeof showSection === 'function' ? showSection : null;
+document.addEventListener('DOMContentLoaded', () => {
+    const origFn = window.showSection;
+    window.showSection = function(name) {
+        origFn(name);
+        if (name === 'quartos') initQuartosAdmin();
+    };
+});

@@ -118,10 +118,17 @@ function loadHotels(filter = 'all') {
     currentFilter = filter;
     const filtered = filter === 'all' ? hotels : hotels.filter(h => h.category === filter);
     const container = document.getElementById('hotelsList');
-    
+    const todosQuartos = JSON.parse(localStorage.getItem('juzzs_quartos')) || [];
+
     container.innerHTML = `
         <div class="hotels-grid">
-            ${filtered.map(hotel => `
+            ${filtered.map(hotel => {
+                const quartosDisp = todosQuartos.filter(q => q.hotelId === hotel.id && q.estado === 'disponivel');
+                const temQuartosReais = quartosDisp.length > 0;
+                const dispBadge = temQuartosReais
+                    ? `<span style="font-size:12px;background:#d1fae5;color:#065f46;padding:3px 8px;border-radius:20px;font-weight:600;">✅ ${quartosDisp.length} quarto(s) disponível(eis)</span>`
+                    : `<span style="font-size:12px;color:var(--text-secondary);">A partir de ${hotel.pricePerNight.toLocaleString()} Kz/noite</span>`;
+                return `
                 <div class="hotel-full-card" onclick="viewHotelDetails(${hotel.id})">
                     <div class="hotel-full-image">
                         <img src="${hotel.image}" alt="${hotel.name}">
@@ -140,6 +147,7 @@ function loadHotels(filter = 'all') {
                         </div>
                         
                         <p class="location">📍 ${hotel.location} • ${hotel.distance}</p>
+                        <div style="margin:6px 0;">${dispBadge}</div>
                         <p class="description">${hotel.description}</p>
                         
                         <div class="amenities-preview">
@@ -153,8 +161,8 @@ function loadHotels(filter = 'all') {
                             Reservar Agora
                         </button>
                     </div>
-                </div>
-            `).join('')}
+                </div>`;
+            }).join('')}
         </div>
     `;
 }
@@ -234,7 +242,40 @@ function loadPackages() {
 function openHotelBooking(hotelId) {
     const hotel = hotels.find(h => h.id === hotelId);
     document.getElementById('selectedHotelId').value = hotelId;
-    
+
+    // Buscar quartos registados disponíveis para este hotel
+    const todosQuartos = JSON.parse(localStorage.getItem('juzzs_quartos')) || [];
+    const quartosDisponiveis = todosQuartos.filter(q => q.hotelId === hotelId && q.estado === 'disponivel');
+    const usarQuartosReais = quartosDisponiveis.length > 0;
+
+    // Montar opções do select
+    let roomSelectHTML;
+    if (usarQuartosReais) {
+        roomSelectHTML = `
+            <label>Escolha o Quarto Disponível:</label>
+            <select id="roomType" onchange="calculateHotelPrice()" data-mode="real">
+                ${quartosDisponiveis.map(q => `
+                    <option value="${q.preco}" data-capacity="${q.capacidade}" data-quarto-id="${q.id}">
+                        Quarto ${q.numero} — ${q.tipo}${q.andar ? ' (Andar '+q.andar+')' : ''} · ${q.capacidade} pess. · ${parseInt(q.preco).toLocaleString('pt')} Kz/noite
+                    </option>
+                `).join('')}
+            </select>
+            <div id="quartoDescricao" style="margin-top:6px;font-size:12px;color:var(--text-secondary);"></div>
+        `;
+    } else {
+        // Fallback para tipos hardcoded se não houver quartos registados
+        roomSelectHTML = `
+            <label>Tipo de Quarto:</label>
+            <select id="roomType" onchange="calculateHotelPrice()" data-mode="fallback">
+                ${hotel.roomTypes.map(room => `
+                    <option value="${room.price}" data-capacity="${room.capacity}">
+                        ${room.type} - ${room.capacity} pessoas - ${room.price.toLocaleString()} Kz/noite
+                    </option>
+                `).join('')}
+            </select>
+        `;
+    }
+
     document.getElementById('selectedHotelInfo').innerHTML = `
         <div class="selected-item-info">
             <img src="${hotel.image}" alt="${hotel.name}">
@@ -242,24 +283,32 @@ function openHotelBooking(hotelId) {
                 <h4>${hotel.name}</h4>
                 <p>📍 ${hotel.location}</p>
                 <div class="rating">⭐ ${hotel.rating} (${hotel.reviews} avaliações)</div>
-                <div class="price-info">${hotel.pricePerNight.toLocaleString()} Kz/noite</div>
+                ${usarQuartosReais
+                    ? `<div class="price-info" style="color:#10B981;">✅ ${quartosDisponiveis.length} quarto(s) disponível(eis)</div>`
+                    : `<div class="price-info">A partir de ${hotel.pricePerNight.toLocaleString()} Kz/noite</div>`
+                }
             </div>
         </div>
-        
-        <div class="room-types-select">
-            <label>Tipo de Quarto:</label>
-            <select id="roomType" onchange="calculateHotelPrice()">
-                ${hotel.roomTypes.map(room => `
-                    <option value="${room.price}" data-capacity="${room.capacity}">
-                        ${room.type} - ${room.capacity} pessoas - ${room.price.toLocaleString()} Kz/noite
-                    </option>
-                `).join('')}
-            </select>
-        </div>
+        <div class="room-types-select">${roomSelectHTML}</div>
     `;
-    
+
+    // Mostrar descrição do primeiro quarto ao abrir
+    if (usarQuartosReais && quartosDisponiveis[0]?.descricao) {
+        setTimeout(() => updateQuartoDescricao(), 50);
+    }
+
     document.getElementById('hotelBookingModal').classList.add('active');
     calculateHotelPrice();
+}
+
+function updateQuartoDescricao() {
+    const sel = document.getElementById('roomType');
+    const descEl = document.getElementById('quartoDescricao');
+    if (!sel || !descEl) return;
+    const quartoId = sel.selectedOptions[0]?.dataset?.quartoId;
+    if (!quartoId) return;
+    const q = (JSON.parse(localStorage.getItem('juzzs_quartos')) || []).find(x => x.id === quartoId);
+    descEl.textContent = q?.descricao ? '🛋️ ' + q.descricao : '';
 }
 
 // Calculate hotel booking price
@@ -268,8 +317,11 @@ function calculateHotelPrice() {
     const checkOut = document.getElementById('checkOutHotel').value;
     const rooms = parseInt(document.getElementById('roomsHotel').value) || 1;
     const roomTypeSelect = document.getElementById('roomType');
-    const pricePerNight = parseFloat(roomTypeSelect.value) || 0;
-    
+    const pricePerNight = parseFloat(roomTypeSelect?.value) || 0;
+
+    // Atualizar descrição se for quarto real
+    if (roomTypeSelect?.dataset?.mode === 'real') updateQuartoDescricao();
+
     if (checkIn && checkOut) {
         const nights = Math.max(1, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)));
         const total = pricePerNight * nights * rooms;
@@ -290,9 +342,16 @@ document.getElementById('hotelBookingForm').addEventListener('submit', function(
     const checkOut = document.getElementById('checkOutHotel').value;
     const rooms = parseInt(document.getElementById('roomsHotel').value);
     const guests = parseInt(document.getElementById('guestsHotel').value);
-    const roomType = document.getElementById('roomType').selectedOptions[0].text.split(' - ')[0];
-    const pricePerNight = parseFloat(document.getElementById('roomType').value);
-    
+    const roomTypeSelect = document.getElementById('roomType');
+    const pricePerNight = parseFloat(roomTypeSelect.value);
+    const modoReal = roomTypeSelect.dataset.mode === 'real';
+
+    // Obter ID do quarto real (se modo real)
+    const quartoId = modoReal ? roomTypeSelect.selectedOptions[0]?.dataset?.quartoId : null;
+    const roomType = modoReal
+        ? roomTypeSelect.selectedOptions[0].text.split('—')[0].replace('Quarto ', 'Nº ').trim()
+        : roomTypeSelect.selectedOptions[0].text.split(' - ')[0];
+
     const nights = Math.max(1, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)));
     const totalPrice = pricePerNight * nights * rooms;
     
@@ -304,6 +363,7 @@ document.getElementById('hotelBookingForm').addEventListener('submit', function(
         itemName: hotel.name,
         itemImage: hotel.image,
         roomType: roomType,
+        quartoId: quartoId,  // referência ao quarto real
         checkIn: checkIn,
         checkOut: checkOut,
         nights: nights,
@@ -316,6 +376,17 @@ document.getElementById('hotelBookingForm').addEventListener('submit', function(
         createdAt: new Date().toISOString()
     };
     
+    // Marcar quarto real como reservado
+    if (quartoId) {
+        const quartos = JSON.parse(localStorage.getItem('juzzs_quartos')) || [];
+        const idx = quartos.findIndex(q => q.id === quartoId);
+        if (idx > -1) {
+            quartos[idx].estado = 'reservado';
+            quartos[idx].reservaId = newReservation.id;
+            localStorage.setItem('juzzs_quartos', JSON.stringify(quartos));
+        }
+    }
+
     const reservations = JSON.parse(localStorage.getItem('juzzs_reservations')) || [];
     reservations.push(newReservation);
     localStorage.setItem('juzzs_reservations', JSON.stringify(reservations));
@@ -325,7 +396,7 @@ document.getElementById('hotelBookingForm').addEventListener('submit', function(
     loadStats();
     loadReservations();
     
-    showNotification('Reserva de hotel criada com sucesso!', 'success');
+    showNotification('Reserva criada com sucesso! Aguardando confirmação.', 'success');
 });
 
 // Open package booking modal
@@ -644,6 +715,18 @@ function cancelReservation(reservationId) {
     const index = reservations.findIndex(r => r.id === reservationId);
     
     if (index !== -1) {
+        // Devolver quarto real ao estado disponivel
+        const quartoId = reservations[index].quartoId;
+        if (quartoId) {
+            const quartos = JSON.parse(localStorage.getItem('juzzs_quartos')) || [];
+            const qi = quartos.findIndex(q => q.id === quartoId);
+            if (qi > -1) {
+                quartos[qi].estado = 'disponivel';
+                delete quartos[qi].reservaId;
+                localStorage.setItem('juzzs_quartos', JSON.stringify(quartos));
+            }
+        }
+
         reservations[index].status = 'cancelled';
         localStorage.setItem('juzzs_reservations', JSON.stringify(reservations));
         
@@ -665,12 +748,12 @@ function showSection(sectionName) {
         link.classList.remove('active');
     });
     
-    // Find and activate the correct menu item
     const menuItem = Array.from(document.querySelectorAll('.sidebar-menu a'))
         .find(a => a.getAttribute('onclick')?.includes(`'${sectionName}'`));
-    if (menuItem) {
-        menuItem.classList.add('active');
-    }
+    if (menuItem) menuItem.classList.add('active');
+
+    // Actualizar lista de hotéis ao entrar na secção (para reflectir quartos reais)
+    if (sectionName === 'hoteis') loadHotels(currentFilter);
 }
 
 function closeModal(modalId) {

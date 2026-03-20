@@ -25,27 +25,31 @@
             <nav>
                 <ul class="sidebar-menu">
                     <li><a href="#" onclick="showSection('inicio')" class="active">
-                        <span class="icon"></span>
+                        <span class="icon">📊</span>
                         <span>Visão Geral</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('reservas')">
-                        <span class="icon"></span>
+                        <span class="icon">📋</span>
                         <span>Reservas</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('disponibilidade')">
-                        <span class="icon"></span>
+                        <span class="icon">🏷️</span>
                         <span>Disponibilidade</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('clientes')">
-                        <span class="icon"></span>
+                        <span class="icon">👥</span>
                         <span>Clientes</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('funcionarios')">
-                        <span class="icon"></span>
+                        <span class="icon">👔</span>
                         <span>Funcionários</span>
                     </a></li>
+                    <li><a href="#" onclick="showSection('quartos')">
+                        <span class="icon">🛏️</span>
+                        <span>Quartos</span>
+                    </a></li>
                     <li><a href="#" onclick="showSection('relatorios')">
-                        <span class="icon"></span>
+                        <span class="icon">📈</span>
                         <span>Relatórios</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('trafego')">
@@ -53,7 +57,7 @@
                         <span>Tráfego</span>
                     </a></li>
                     <li><a href="#" onclick="showSection('configuracoes')">
-                        <span class="icon"></span>
+                        <span class="icon">⚙️</span>
                         <span>Configurações</span>
                     </a></li>
                 </ul>
@@ -68,7 +72,7 @@
                     </div>
                 </div>
                 <button class="btn-logout" onclick="logout()">
-                    <span></span>
+                    <span>🚪</span>
                     Sair
                 </button>
             </div>
@@ -88,28 +92,28 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;"></div>
+                            <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
                         </div>
                         <div class="stat-value" id="totalReceita">0 Kz</div>
                         <div class="stat-label">Receita Total</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('reservas')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;"></div>
+                            <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📋</div>
                         </div>
                         <div class="stat-value" id="totalReservas">0</div>
                         <div class="stat-label">Total Reservas</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('clientes')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;"></div>
+                            <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">👥</div>
                         </div>
                         <div class="stat-value" id="totalClientes">0</div>
                         <div class="stat-label">Clientes</div>
                     </div>
                     <div class="stat-card clickable" onclick="showSection('funcionarios')">
                         <div class="stat-card-header">
-                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;"></div>
+                            <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">🏷️</div>
                         </div>
                         <div class="stat-value" id="totalFuncionarios">0</div>
                         <div class="stat-label">Funcionários</div>
@@ -137,6 +141,11 @@
                         <h4>Ticket Médio</h4>
                         <p class="stat-number" id="ticketMedio">0 Kz</p>
                         <button class="btn-quick" onclick="showSection('relatorios')">Ver →</button>
+                    </div>
+                    <div class="quick-stat-card">
+                        <h4>Quartos Registados</h4>
+                        <p class="stat-number" id="quartosCount">0</p>
+                        <button class="btn-quick" onclick="showSection('quartos')">Gerir →</button>
                     </div>
                 </div>
 
@@ -277,22 +286,22 @@
 
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;"></div>
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: #10B981;">💰</div>
                         <div class="stat-value" id="reportReceitaTotal">0 Kz</div>
                         <div class="stat-label">Receita Total</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;"></div>
+                        <div class="stat-icon" style="background: rgba(59, 130, 246, 0.1); color: #3B82F6;">📋</div>
                         <div class="stat-value" id="reportTotalReservasAdmin">0</div>
                         <div class="stat-label">Total de Reservas</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;"></div>
+                        <div class="stat-icon" style="background: rgba(139, 92, 246, 0.1); color: #8B5CF6;">📊</div>
                         <div class="stat-value" id="reportTaxaConversao">0%</div>
                         <div class="stat-label">Taxa de Conversão</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;"></div>
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: #F59E0B;">🎯</div>
                         <div class="stat-value" id="reportTicketMedioAdmin">0 Kz</div>
                         <div class="stat-label">Ticket Médio</div>
                     </div>
@@ -369,6 +378,74 @@
                     </div>
                 </div>
             </div>
+            <!-- Quartos Section -->
+            <div id="quartos-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Quartos</h1>
+                        <p>Registe, edite e controle o estado dos quartos por hotel</p>
+                    </div>
+                    <button class="btn-primary-dash" onclick="openQuartoModal()">
+                        <span>🛏️</span> Registar Quarto
+                    </button>
+                </div>
+
+                <!-- Filtros -->
+                <div class="card" style="padding:16px 20px;">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+                        <div class="form-group" style="margin:0;flex:2;min-width:180px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Hotel</label>
+                            <select id="qFilterHotel" class="form-input" style="padding:8px 12px;" onchange="renderQuartosAdmin()">
+                                <option value="all">Todos os Hotéis</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;flex:1;min-width:140px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Estado</label>
+                            <select id="qFilterEstado" class="form-input" style="padding:8px 12px;" onchange="renderQuartosAdmin()">
+                                <option value="all">Todos</option>
+                                <option value="disponivel">✅ Disponível</option>
+                                <option value="ocupado">🔴 Ocupado</option>
+                                <option value="reservado">📅 Reservado</option>
+                                <option value="manutencao">🔧 Manutenção</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;flex:2;min-width:180px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Pesquisar</label>
+                            <input type="text" id="qFilterSearch" class="form-input" style="padding:8px 12px;" placeholder="Nº quarto, tipo..." oninput="renderQuartosAdmin()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stats Quartos -->
+                <div class="stats-grid" id="quartosStatsAdmin"></div>
+
+                <!-- Tabela Quartos -->
+                <div class="card">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Hotel</th>
+                                    <th>Nº</th>
+                                    <th>Tipo</th>
+                                    <th>Andar</th>
+                                    <th>Cap.</th>
+                                    <th>Preço/Noite</th>
+                                    <th>Estado</th>
+                                    <th>Registado por</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="quartosTableBodyAdmin"></tbody>
+                        </table>
+                    </div>
+                    <div id="quartosEmptyAdmin" style="display:none;padding:40px;text-align:center;color:var(--text-secondary);">
+                        <div style="font-size:3rem;">🛏️</div>
+                        <p style="margin-top:8px;">Nenhum quarto registado. Clique em "Registar Quarto" para começar.</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Tráfego Section -->
             <div id="trafego-section" class="section">
                 <div class="dashboard-header">
@@ -492,6 +569,76 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- ======= MODAL: Registar/Editar Quarto ======= -->
+    <div id="quartoModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="quartoModalTitle">Registar Quarto</h3>
+                <button class="modal-close" onclick="closeModal('quartoModal')">×</button>
+            </div>
+            <div style="padding:0 24px 24px;">
+                <div class="form-group">
+                    <label>Hotel</label>
+                    <select id="qHotelId" class="form-input" required></select>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Número do Quarto</label>
+                        <input type="text" id="qNumero" class="form-input" placeholder="Ex: 101" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <select id="qTipo" class="form-input">
+                            <option value="Standard">Standard</option>
+                            <option value="Deluxe">Deluxe</option>
+                            <option value="Suite">Suite</option>
+                            <option value="Familiar">Familiar</option>
+                            <option value="Executive">Executive</option>
+                            <option value="Presidential">Presidential</option>
+                            <option value="Single">Single</option>
+                            <option value="Double">Double</option>
+                            <option value="Tenda Safari">Tenda Safari</option>
+                            <option value="Suite Panorâmica">Suite Panorâmica</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Capacidade (pessoas)</label>
+                        <input type="number" id="qCapacidade" class="form-input" value="2" min="1" max="10" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço / Noite (Kz)</label>
+                        <input type="number" id="qPreco" class="form-input" placeholder="15000" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Andar</label>
+                        <input type="text" id="qAndar" class="form-input" placeholder="Ex: 1">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Estado</label>
+                    <select id="qEstado" class="form-input">
+                        <option value="disponivel">✅ Disponível</option>
+                        <option value="ocupado">🔴 Ocupado</option>
+                        <option value="manutencao">🔧 Manutenção</option>
+                        <option value="reservado">📅 Reservado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição / Comodidades</label>
+                    <textarea id="qDescricao" class="form-input" rows="3" placeholder="Ex: Ar-condicionado, TV, casa de banho privada..."></textarea>
+                </div>
+                <input type="hidden" id="qEditId">
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;">
+                    <button class="btn-secondary" onclick="closeModal('quartoModal')">Cancelar</button>
+                    <button class="btn-primary-dash" onclick="saveQuarto()">💾 Guardar</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modals -->

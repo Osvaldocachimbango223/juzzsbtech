@@ -942,3 +942,195 @@ const printStyles = `
 const styleSheet = document.createElement('style');
 styleSheet.textContent = printStyles;
 document.head.appendChild(styleSheet);
+
+// =====================================================
+// MÓDULO DE QUARTOS — FUNCIONÁRIO
+// =====================================================
+const QUARTOS_KEY_FUNC = 'juzzs_quartos';
+
+function getQuartosFunc() {
+    try { return JSON.parse(localStorage.getItem(QUARTOS_KEY_FUNC)) || []; } catch { return []; }
+}
+function saveQuartosFunc(list) {
+    localStorage.setItem(QUARTOS_KEY_FUNC, JSON.stringify(list));
+}
+
+function initQuartosFunc() {
+    // Preencher selects de hotel nos filtros e modal
+    ['qFuncFilterHotel'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<option value="all">Todos os Hotéis</option>' +
+            hotels.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+    });
+    const modalSel = document.getElementById('qFuncHotelId');
+    if (modalSel) modalSel.innerHTML = hotels.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
+    renderQuartosFunc();
+}
+
+function renderQuartosFunc() {
+    const quartos = getQuartosFunc();
+    const filterHotel = document.getElementById('qFuncFilterHotel')?.value || 'all';
+    const filterEstado = document.getElementById('qFuncFilterEstado')?.value || 'all';
+    const filterSearch = (document.getElementById('qFuncFilterSearch')?.value || '').toLowerCase();
+
+    const filtered = quartos.filter(q => {
+        if (filterHotel !== 'all' && String(q.hotelId) !== filterHotel) return false;
+        if (filterEstado !== 'all' && q.estado !== filterEstado) return false;
+        if (filterSearch && !(`${q.numero} ${q.tipo} ${q.hotelNome}`).toLowerCase().includes(filterSearch)) return false;
+        return true;
+    });
+
+    // Stats
+    const statsEl = document.getElementById('quartosStatsFunc');
+    if (statsEl) {
+        const total = quartos.length;
+        const disponiveis = quartos.filter(q => q.estado === 'disponivel').length;
+        const ocupados = quartos.filter(q => q.estado === 'ocupado').length;
+        const reservados = quartos.filter(q => q.estado === 'reservado').length;
+        statsEl.innerHTML = `
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(59,130,246,.1);color:#3B82F6;">🛏️</div></div><div class="stat-value">${total}</div><div class="stat-label">Total</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(16,185,129,.1);color:#10B981;">✅</div></div><div class="stat-value">${disponiveis}</div><div class="stat-label">Disponíveis</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(239,68,68,.1);color:#EF4444;">🔴</div></div><div class="stat-value">${ocupados}</div><div class="stat-label">Ocupados</div></div>
+            <div class="stat-card"><div class="stat-card-header"><div class="stat-icon" style="background:rgba(245,158,11,.1);color:#F59E0B;">📅</div></div><div class="stat-value">${reservados}</div><div class="stat-label">Reservados</div></div>
+        `;
+    }
+
+    const container = document.getElementById('quartosCardsFunc');
+    const empty = document.getElementById('quartosFuncEmpty');
+    if (!container) return;
+
+    if (filtered.length === 0) {
+        container.innerHTML = '';
+        if (empty) empty.style.display = 'block';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    const estadoConfig = {
+        disponivel: { label: 'Disponível', icon: '✅', bg: '#d1fae5', color: '#065f46' },
+        ocupado:    { label: 'Ocupado',    icon: '🔴', bg: '#fee2e2', color: '#991b1b' },
+        manutencao: { label: 'Manutenção', icon: '🔧', bg: '#fef3c7', color: '#92400e' },
+        reservado:  { label: 'Reservado',  icon: '📅', bg: '#dbeafe', color: '#1e40af' }
+    };
+
+    container.innerHTML = filtered.map(q => {
+        const ec = estadoConfig[q.estado] || { label: q.estado, icon: '❓', bg: '#f3f4f6', color: '#374151' };
+        return `
+        <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:20px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div>
+                    <div style="font-size:1.4rem;font-weight:700;">Quarto ${q.numero}</div>
+                    <div style="font-size:13px;color:var(--text-secondary);">${q.hotelNome}</div>
+                </div>
+                <span style="padding:4px 10px;border-radius:20px;font-size:12px;font-weight:600;background:${ec.bg};color:${ec.color};">${ec.icon} ${ec.label}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;">
+                <div><span style="color:var(--text-secondary);">Tipo:</span> <strong>${q.tipo}</strong></div>
+                <div><span style="color:var(--text-secondary);">Andar:</span> <strong>${q.andar || '—'}</strong></div>
+                <div><span style="color:var(--text-secondary);">Capacidade:</span> <strong>${q.capacidade} pess.</strong></div>
+                <div><span style="color:var(--text-secondary);">Preço/noite:</span> <strong>${formatCurrency(q.preco)}</strong></div>
+            </div>
+            ${q.descricao ? `<div style="font-size:12px;color:var(--text-secondary);border-top:1px solid var(--border);padding-top:8px;">${q.descricao}</div>` : ''}
+            <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                <select onchange="changeQuartoEstadoFunc('${q.id}', this.value)" style="flex:1;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg-input,var(--bg-card));color:var(--text-primary);font-size:12px;">
+                    <option value="disponivel" ${q.estado==='disponivel'?'selected':''}>✅ Disponível</option>
+                    <option value="ocupado" ${q.estado==='ocupado'?'selected':''}>🔴 Ocupado</option>
+                    <option value="reservado" ${q.estado==='reservado'?'selected':''}>📅 Reservado</option>
+                    <option value="manutencao" ${q.estado==='manutencao'?'selected':''}>🔧 Manutenção</option>
+                </select>
+                <button class="btn-action btn-view" title="Editar" onclick="editQuartoFunc('${q.id}')">✏️</button>
+            </div>
+            <div style="font-size:11px;color:var(--text-secondary);">Registado por ${q.registadoPor || '—'} • ${formatDate(q.criadoEm)}</div>
+        </div>`;
+    }).join('');
+}
+
+function changeQuartoEstadoFunc(id, novoEstado) {
+    const quartos = getQuartosFunc();
+    const idx = quartos.findIndex(q => q.id === id);
+    if (idx === -1) return;
+    const user = JSON.parse(localStorage.getItem('juzzs_current_user'));
+    quartos[idx].estado = novoEstado;
+    quartos[idx].atualizadoEm = new Date().toISOString();
+    quartos[idx].atualizadoPor = user?.name || 'Funcionário';
+    saveQuartosFunc(quartos);
+    renderQuartosFunc();
+    showToast('Estado actualizado!', 'success');
+}
+
+function openQuartoModalFunc() {
+    document.getElementById('qFuncEditId').value = '';
+    document.getElementById('qFuncNumero').value = '';
+    document.getElementById('qFuncTipo').value = 'Standard';
+    document.getElementById('qFuncCapacidade').value = 2;
+    document.getElementById('qFuncPreco').value = '';
+    document.getElementById('qFuncAndar').value = '';
+    document.getElementById('qFuncEstado').value = 'disponivel';
+    document.getElementById('qFuncDescricao').value = '';
+    document.getElementById('quartoModalTitleFunc').textContent = 'Registar Quarto';
+    document.getElementById('quartoModalFunc').classList.add('active');
+}
+
+function editQuartoFunc(id) {
+    const q = getQuartosFunc().find(x => x.id === id);
+    if (!q) return;
+    document.getElementById('qFuncEditId').value = q.id;
+    document.getElementById('qFuncHotelId').value = q.hotelId;
+    document.getElementById('qFuncNumero').value = q.numero;
+    document.getElementById('qFuncTipo').value = q.tipo;
+    document.getElementById('qFuncCapacidade').value = q.capacidade;
+    document.getElementById('qFuncPreco').value = q.preco;
+    document.getElementById('qFuncAndar').value = q.andar || '';
+    document.getElementById('qFuncEstado').value = q.estado;
+    document.getElementById('qFuncDescricao').value = q.descricao || '';
+    document.getElementById('quartoModalTitleFunc').textContent = 'Editar Quarto';
+    document.getElementById('quartoModalFunc').classList.add('active');
+}
+
+function saveQuartoFunc() {
+    const hotelId = parseInt(document.getElementById('qFuncHotelId').value);
+    const numero = document.getElementById('qFuncNumero').value.trim();
+    const tipo = document.getElementById('qFuncTipo').value;
+    const capacidade = parseInt(document.getElementById('qFuncCapacidade').value);
+    const preco = parseFloat(document.getElementById('qFuncPreco').value);
+    const andar = document.getElementById('qFuncAndar').value.trim();
+    const estado = document.getElementById('qFuncEstado').value;
+    const descricao = document.getElementById('qFuncDescricao').value.trim();
+    const editId = document.getElementById('qFuncEditId').value;
+
+    if (!numero || isNaN(preco) || preco < 0) {
+        showToast('Preencha todos os campos obrigatórios.', 'error'); return;
+    }
+
+    const hotel = hotels.find(h => h.id === hotelId);
+    const quartos = getQuartosFunc();
+
+    const duplicado = quartos.find(q => q.hotelId === hotelId && q.numero === numero && q.id !== editId);
+    if (duplicado) { showToast(`Já existe o quarto nº ${numero} neste hotel.`, 'error'); return; }
+
+    const user = JSON.parse(localStorage.getItem('juzzs_current_user'));
+
+    if (editId) {
+        const idx = quartos.findIndex(q => q.id === editId);
+        if (idx > -1) {
+            quartos[idx] = { ...quartos[idx], hotelId, hotelNome: hotel?.name || '', numero, tipo, capacidade, preco, andar, estado, descricao, atualizadoEm: new Date().toISOString(), atualizadoPor: user?.name || 'Funcionário' };
+        }
+        showToast('Quarto actualizado!', 'success');
+    } else {
+        quartos.push({ id: 'q_' + Date.now(), hotelId, hotelNome: hotel?.name || '', numero, tipo, capacidade, preco, andar, estado, descricao, registadoPor: user?.name || 'Funcionário', criadoEm: new Date().toISOString() });
+        showToast('Quarto registado com sucesso!', 'success');
+    }
+
+    saveQuartosFunc(quartos);
+    closeModal('quartoModalFunc');
+    renderQuartosFunc();
+}
+
+// Hook showSection for funcionario
+document.addEventListener('DOMContentLoaded', () => {
+    const origFn = window.showSection;
+    window.showSection = function(name) {
+        origFn(name);
+        if (name === 'quartos') initQuartosFunc();
+    };
+});
