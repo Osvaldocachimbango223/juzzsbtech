@@ -727,6 +727,7 @@ document.getElementById('addEmployeeForm')?.addEventListener('submit', function(
     const email = document.getElementById('empEmail').value;
     const phone = document.getElementById('empPhone').value;
     const password = document.getElementById('empPassword').value;
+    const departamentoId = (document.getElementById('empDepartamento') || {}).value || '';
     
     if (allUsers.find(u => u.email === email)) {
         alert('Este email já está em uso');
@@ -740,6 +741,7 @@ document.getElementById('addEmployeeForm')?.addEventListener('submit', function(
         phone,
         password,
         role: 'employee',
+        ...(departamentoId ? { departamentoId } : {}),
         createdAt: new Date().toISOString()
     };
     

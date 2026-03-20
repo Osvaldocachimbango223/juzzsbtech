@@ -44,6 +44,10 @@
                         <span class="icon">👔</span>
                         <span>Funcionários</span>
                     </a></li>
+                    <li><a href="#" onclick="showSection('departamentos')">
+                        <span class="icon">🏢</span>
+                        <span>Departamentos</span>
+                    </a></li>
                     <li><a href="#" onclick="showSection('quartos')">
                         <span class="icon">🛏️</span>
                         <span>Quartos</span>
@@ -268,6 +272,82 @@
 
                 <div class="card">
                     <div id="employeesList"></div>
+                </div>
+            </div>
+
+
+            <!-- DEPARTAMENTOS Section -->
+            <div id="departamentos-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Gestão de Departamentos</h1>
+                        <p>Controlo e base de dados dos departamentos da empresa</p>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn-secondary" onclick="exportarDeptCSV()">📥 Exportar CSV</button>
+                        <button class="btn-primary-dash" onclick="abrirModalDept(null)"><span>🏢</span> Novo Departamento</button>
+                    </div>
+                </div>
+                <div class="stats-grid" style="margin-bottom:24px;">
+                    <div class="stat-card">
+                        <div class="stat-card-header"><div class="stat-icon" style="background:rgba(99,102,241,.12);color:#6366F1;">🏢</div></div>
+                        <div class="stat-value" id="deptStatTotal">0</div>
+                        <div class="stat-label">Total Departamentos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header"><div class="stat-icon" style="background:rgba(16,185,129,.12);color:#10B981;">✅</div></div>
+                        <div class="stat-value" id="deptStatActivos">0</div>
+                        <div class="stat-label">Activos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-card-header"><div class="stat-icon" style="background:rgba(239,68,68,.12);color:#EF4444;">⛔</div></div>
+                        <div class="stat-value" id="deptStatInactivos">0</div>
+                        <div class="stat-label">Inactivos</div>
+                    </div>
+                    <div class="stat-card clickable" onclick="showSection('funcionarios')">
+                        <div class="stat-card-header"><div class="stat-icon" style="background:rgba(245,158,11,.12);color:#F59E0B;">👔</div></div>
+                        <div class="stat-value" id="deptStatFuncs">0</div>
+                        <div class="stat-label">Funcionários Total</div>
+                    </div>
+                </div>
+                <div class="card" style="padding:16px 20px;margin-bottom:16px;">
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;">
+                        <div class="form-group" style="margin:0;flex:2;min-width:200px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Pesquisar</label>
+                            <input type="text" id="deptSearch" class="form-input" style="padding:8px 12px;" placeholder="Nome, código ou responsável…" oninput="renderDepartamentos()">
+                        </div>
+                        <div class="form-group" style="margin:0;flex:1;min-width:150px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Estado</label>
+                            <select id="deptEstadoFilter" class="form-input" style="padding:8px 12px;" onchange="renderDepartamentos()">
+                                <option value="all">Todos</option>
+                                <option value="activo">✅ Activo</option>
+                                <option value="inactivo">⛔ Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Departamento</th>
+                                    <th>Código</th>
+                                    <th>Responsável</th>
+                                    <th>Funcionários</th>
+                                    <th>Estado</th>
+                                    <th>Criado em</th>
+                                    <th>Acções</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deptTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div id="deptEmpty" style="display:none;padding:48px;text-align:center;color:var(--text-secondary);">
+                        <div style="font-size:3rem;">🏢</div>
+                        <p style="margin-top:8px;">Nenhum departamento encontrado.</p>
+                        <button class="btn-primary-dash" style="margin-top:12px;" onclick="abrirModalDept(null)">Criar primeiro departamento</button>
+                    </div>
                 </div>
             </div>
 
@@ -671,6 +751,13 @@
                     <label for="empPassword">Senha</label>
                     <input type="password" id="empPassword" class="form-input" required minlength="6">
                 </div>
+
+                <div class="form-group">
+                    <label for="empDepartamento">Departamento</label>
+                    <select id="empDepartamento" class="form-input select-departamento">
+                        <option value="">— Sem departamento —</option>
+                    </select>
+                </div>
                 
                 <button type="submit" class="btn-submit">Adicionar Funcionário</button>
             </form>
@@ -740,9 +827,73 @@
         </div>
     </div>
 
+
+    <!-- ======= MODAL: Criar / Editar Departamento ======= -->
+    <div id="deptModal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="deptModalTitle">Novo Departamento</h3>
+                <button class="modal-close" onclick="fecharModalDept()">×</button>
+            </div>
+            <div style="padding:0 24px 24px;">
+                <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Nome do Departamento *</label>
+                        <input type="text" id="deptNome" class="form-input" placeholder="Ex: Recepção" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Código *</label>
+                        <input type="text" id="deptCodigo" class="form-input" placeholder="Ex: REC" maxlength="6" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="deptDescricao" class="form-input" rows="3" placeholder="Descreva as responsabilidades deste departamento…"></textarea>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+                    <div class="form-group">
+                        <label>Responsável</label>
+                        <input type="text" id="deptResponsavel" class="form-input" placeholder="Nome do responsável">
+                    </div>
+                    <div class="form-group">
+                        <label>Estado</label>
+                        <select id="deptEstado" class="form-input">
+                            <option value="activo">✅ Activo</option>
+                            <option value="inactivo">⛔ Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Cor identificadora</label>
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <input type="color" id="deptCor" value="#6366F1" style="width:48px;height:36px;border-radius:6px;border:1px solid var(--border-color);cursor:pointer;background:none;">
+                        <span style="font-size:13px;color:var(--text-secondary);">Cor usada para identificar visualmente o departamento</span>
+                    </div>
+                </div>
+                <input type="hidden" id="deptEditId">
+                <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:8px;">
+                    <button class="btn-secondary" onclick="fecharModalDept()">Cancelar</button>
+                    <button class="btn-primary-dash" onclick="salvarDept()">💾 Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======= MODAL: Funcionários do Departamento ======= -->
+    <div id="deptFuncsModal" class="modal" style="display:none;">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="deptFuncsModalTitle">Funcionários</h3>
+                <button class="modal-close" onclick="fecharModalFuncsDept()">×</button>
+            </div>
+            <div id="deptFuncsModalBody" style="padding:0 24px 24px;"></div>
+        </div>
+    </div>
+
     <script src="traffic-tracker.js"></script>
     <script src="script.js"></script>
     <script src="dashboard-data.js"></script>
     <script src="admin-dashboard.js"></script>
+    <script src="departamentos.js"></script>
 </body>
 </html>
