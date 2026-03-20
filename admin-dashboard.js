@@ -960,6 +960,9 @@ function closeModal(modalId) {
 
 function logout() {
     if (confirm('Tem certeza que deseja sair?')) {
+        if (typeof trackEvent === 'function') {
+            trackEvent('logout', currentUser ? currentUser.name : 'Admin');
+        }
         localStorage.removeItem('juzzs_current_user');
         window.location.href = 'index.html';
     }
@@ -1001,4 +1004,247 @@ function getStatusIcon(status) {
 
 function showNotification(message, type = 'success') {
     alert(message);
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  HISTÓRICO DE TRÁFEGO
+// ═══════════════════════════════════════════════════════════════
+
+const TRAFFIC_KEY = 'juzzs_traffic_log';
+const TRAF_PAGE_SIZE = 25;
+let trafficCurrentPage = 1;
+let trafficFiltered = [];
+
+function getTrafficLog() {
+    try { return JSON.parse(localStorage.getItem(TRAFFIC_KEY)) || []; }
+    catch (_) { return []; }
+}
+
+// Inicializa quando a secção é aberta
+const _origShowSection = showSection;
+showSection = function(name) {
+    _origShowSection(name);
+    if (name === 'trafego') initTrafficSection();
+};
+
+function initTrafficSection() {
+    const log = getTrafficLog();
+
+    // Preenche opções de páginas
+    const pages = [...new Set(log.map(e => e.page))].sort();
+    const pageFilter = document.getElementById('trafPageFilter');
+    if (pageFilter) {
+        pageFilter.innerHTML = '<option value="">Todas as páginas</option>' +
+            pages.map(p => `<option value="${p}">${p}</option>`).join('');
+    }
+
+    updateTrafficStats(log);
+    filterTrafficLog();
+}
+
+function updateTrafficStats(log) {
+    const today = new Date().toDateString();
+    const todayEntries = log.filter(e => new Date(e.timestamp).toDateString() === today);
+
+    // Utilizadores únicos (com sessão)
+    const uniqueUsers = new Set(log.filter(e => e.userId).map(e => e.userId));
+    const guestCount  = log.filter(e => !e.userId && e.action === 'visualização').length;
+
+    const loginCount  = log.filter(e => e.action === 'login').length;
+    const logoutCount = log.filter(e => e.action === 'logout').length;
+
+    // Página mais visitada
+    const pageCounts = {};
+    log.filter(e => e.action === 'visualização').forEach(e => {
+        pageCounts[e.page] = (pageCounts[e.page] || 0) + 1;
+    });
+    const topPage = Object.entries(pageCounts).sort((a, b) => b[1] - a[1])[0];
+
+    setEl('trafTotalVisitas', log.length);
+    setEl('trafHoje', todayEntries.length + ' hoje');
+    setEl('trafUtilizadores', uniqueUsers.size);
+    setEl('trafVisitantes', guestCount + ' visitantes');
+    setEl('trafLogins', loginCount);
+    setEl('trafLogouts', logoutCount + ' logouts');
+    setEl('trafPaginaMaisVisitada', topPage ? topPage[0] : '—');
+    setEl('trafPaginaCount', topPage ? topPage[1] + ' visitas' : '0 visitas');
+}
+
+function setEl(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+}
+
+function filterTrafficLog() {
+    const log   = getTrafficLog().slice().reverse(); // mais recente primeiro
+    const action = (document.getElementById('trafActionFilter')?.value || '').toLowerCase();
+    const role   = (document.getElementById('trafRoleFilter')?.value  || '').toLowerCase();
+    const page   = (document.getElementById('trafPageFilter')?.value  || '').toLowerCase();
+    const from   = document.getElementById('trafDateFrom')?.value;
+    const to     = document.getElementById('trafDateTo')?.value;
+    const user   = (document.getElementById('trafUserSearch')?.value  || '').toLowerCase();
+
+    trafficFiltered = log.filter(e => {
+        if (action && !e.action.toLowerCase().includes(action)) return false;
+        if (role   && e.userRole.toLowerCase() !== role) return false;
+        if (page   && e.page.toLowerCase() !== page)    return false;
+        if (user   && !(e.userName.toLowerCase().includes(user) || (e.userEmail||'').toLowerCase().includes(user))) return false;
+        if (from) {
+            const d = e.timestamp.split('T')[0];
+            if (d < from) return false;
+        }
+        if (to) {
+            const d = e.timestamp.split('T')[0];
+            if (d > to) return false;
+        }
+        return true;
+    });
+
+    setEl('trafShownCount', trafficFiltered.length);
+    setEl('trafTotalCount', log.length);
+
+    trafficCurrentPage = 1;
+    renderTrafficTable();
+    renderTrafficPagination();
+}
+
+function renderTrafficTable() {
+    const tbody = document.getElementById('trafficTableBody');
+    if (!tbody) return;
+
+    const start = (trafficCurrentPage - 1) * TRAF_PAGE_SIZE;
+    const page  = trafficFiltered.slice(start, start + TRAF_PAGE_SIZE);
+
+    if (page.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-row">Nenhum registo encontrado com estes filtros.</td></tr>';
+        return;
+    }
+
+    const ACTION_ICONS = {
+        'visualização'   : '👁️',
+        'login'          : '🔑',
+        'logout'         : '🚪',
+        'reserva_criada' : '🏨',
+        'pesquisa'       : '🔍',
+    };
+    const ROLE_BADGES = {
+        'admin'      : 'badge-info',
+        'employee'   : 'badge-warning',
+        'client'     : 'badge-success',
+        'visitante'  : 'badge-neutral',
+    };
+
+    tbody.innerHTML = page.map(e => {
+        const dt = new Date(e.timestamp);
+        const date = dt.toLocaleDateString('pt-PT');
+        const time = dt.toLocaleTimeString('pt-PT', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+        const icon = ACTION_ICONS[e.action] || '📌';
+        const badge = ROLE_BADGES[e.userRole] || 'badge-neutral';
+        const details = e.details ? `<span class="text-muted" style="font-size:12px;">${escapeHtml(e.details)}</span>` : '—';
+        return `
+        <tr>
+            <td style="white-space:nowrap;font-size:13px;">
+                <div>${date}</div>
+                <div class="text-muted" style="font-size:11px;">${time}</div>
+            </td>
+            <td><span style="font-size:13px;">${escapeHtml(e.page)}</span></td>
+            <td><span class="action-tag">${icon} ${escapeHtml(e.action)}</span></td>
+            <td>
+                <div style="font-size:13px;">${escapeHtml(e.userName)}</div>
+                ${e.userEmail ? `<div class="text-muted" style="font-size:11px;">${escapeHtml(e.userEmail)}</div>` : ''}
+            </td>
+            <td><span class="badge ${badge}">${escapeHtml(e.userRole)}</span></td>
+            <td>${details}</td>
+        </tr>`;
+    }).join('');
+}
+
+function renderTrafficPagination() {
+    const container = document.getElementById('trafPagination');
+    if (!container) return;
+    const totalPages = Math.ceil(trafficFiltered.length / TRAF_PAGE_SIZE);
+    if (totalPages <= 1) { container.innerHTML = ''; return; }
+
+    let html = '';
+    for (let i = 1; i <= totalPages; i++) {
+        const active = i === trafficCurrentPage ? 'btn-primary' : 'btn-secondary';
+        html += `<button class="${active}" style="min-width:36px;padding:6px 10px;" onclick="goToTrafficPage(${i})">${i}</button>`;
+    }
+    container.innerHTML = html;
+}
+
+function goToTrafficPage(n) {
+    trafficCurrentPage = n;
+    renderTrafficTable();
+    renderTrafficPagination();
+    document.getElementById('trafficTable')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function refreshTrafficLog() {
+    initTrafficSection();
+}
+
+function resetTrafficFilters() {
+    ['trafActionFilter','trafRoleFilter','trafPageFilter','trafDateFrom','trafDateTo','trafUserSearch']
+        .forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+    filterTrafficLog();
+}
+
+function clearTrafficLog() {
+    if (!confirm('Tem certeza que quer apagar todo o histórico de tráfego? Esta acção não pode ser revertida.')) return;
+    localStorage.removeItem(TRAFFIC_KEY);
+    initTrafficSection();
+    showToast('Histórico de tráfego apagado.', 'success');
+}
+
+function exportTrafficLog() {
+    const log = trafficFiltered.length > 0 ? trafficFiltered : getTrafficLog().slice().reverse();
+    if (log.length === 0) { showToast('Nenhum dado para exportar.', 'error'); return; }
+
+    const headers = ['Data','Hora','Página','Categoria','Acção','Detalhes','Utilizador','Email','Perfil'];
+    const rows = log.map(e => {
+        const dt = new Date(e.timestamp);
+        return [
+            dt.toLocaleDateString('pt-PT'),
+            dt.toLocaleTimeString('pt-PT'),
+            e.page, e.category || '', e.action, e.details || '',
+            e.userName, e.userEmail || '', e.userRole
+        ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(',');
+    });
+
+    const csv = [headers.join(','), ...rows].join('\n');
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = `juzzs_trafego_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+function viewSystemLogs() {
+    showSection('trafego');
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function showToast(msg, type) {
+    const t = document.createElement('div');
+    t.textContent = msg;
+    t.style.cssText = `
+        position:fixed;bottom:24px;right:24px;z-index:9999;
+        padding:12px 20px;border-radius:10px;font-size:14px;font-weight:500;
+        background:${type==='error'?'#ef4444':'#22c55e'};color:#fff;
+        box-shadow:0 4px 16px rgba(0,0,0,0.3);
+        animation:fadeInUp .3s ease;
+    `;
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 3000);
 }

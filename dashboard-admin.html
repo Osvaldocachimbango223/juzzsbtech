@@ -48,6 +48,10 @@
                         <span class="icon"></span>
                         <span>Relatórios</span>
                     </a></li>
+                    <li><a href="#" onclick="showSection('trafego')">
+                        <span class="icon">📡</span>
+                        <span>Tráfego</span>
+                    </a></li>
                     <li><a href="#" onclick="showSection('configuracoes')">
                         <span class="icon"></span>
                         <span>Configurações</span>
@@ -365,6 +369,128 @@
                     </div>
                 </div>
             </div>
+            <!-- Tráfego Section -->
+            <div id="trafego-section" class="section">
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Histórico de Tráfego</h1>
+                        <p>Monitorize visitas e acções dos utilizadores em tempo real</p>
+                    </div>
+                    <div style="display:flex;gap:10px;">
+                        <button class="btn-primary" onclick="refreshTrafficLog()">🔄 Actualizar</button>
+                        <button class="btn-secondary" onclick="exportTrafficLog()">📥 Exportar CSV</button>
+                        <button class="btn-danger-sm" onclick="clearTrafficLog()">🗑️ Limpar Log</button>
+                    </div>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="stats-grid" id="trafficStats" style="margin-bottom:24px;">
+                    <div class="stat-card">
+                        <div class="stat-icon">👁️</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="trafTotalVisitas">0</div>
+                            <div class="stat-label">Total de Visitas</div>
+                            <div class="stat-sub" id="trafHoje">0 hoje</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">👤</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="trafUtilizadores">0</div>
+                            <div class="stat-label">Utilizadores Únicos</div>
+                            <div class="stat-sub" id="trafVisitantes">0 visitantes</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🔑</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="trafLogins">0</div>
+                            <div class="stat-label">Logins</div>
+                            <div class="stat-sub" id="trafLogouts">0 logouts</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📄</div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="trafPaginaMaisVisitada">—</div>
+                            <div class="stat-label">Página Mais Visitada</div>
+                            <div class="stat-sub" id="trafPaginaCount">0 visitas</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card" style="margin-bottom:16px;">
+                    <div class="filters-row" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+                        <div class="form-group" style="margin:0;min-width:160px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Acção</label>
+                            <select id="trafActionFilter" class="form-input" style="padding:8px 12px;" onchange="filterTrafficLog()">
+                                <option value="">Todas as acções</option>
+                                <option value="visualização">Visualização</option>
+                                <option value="login">Login</option>
+                                <option value="logout">Logout</option>
+                                <option value="reserva_criada">Reserva Criada</option>
+                                <option value="pesquisa">Pesquisa</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;min-width:160px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Perfil</label>
+                            <select id="trafRoleFilter" class="form-input" style="padding:8px 12px;" onchange="filterTrafficLog()">
+                                <option value="">Todos os perfis</option>
+                                <option value="admin">Admin</option>
+                                <option value="employee">Funcionário</option>
+                                <option value="client">Cliente</option>
+                                <option value="visitante">Visitante</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;min-width:160px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Página</label>
+                            <select id="trafPageFilter" class="form-input" style="padding:8px 12px;" onchange="filterTrafficLog()">
+                                <option value="">Todas as páginas</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin:0;min-width:140px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Data início</label>
+                            <input type="date" id="trafDateFrom" class="form-input" style="padding:8px 12px;" onchange="filterTrafficLog()">
+                        </div>
+                        <div class="form-group" style="margin:0;min-width:140px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Data fim</label>
+                            <input type="date" id="trafDateTo" class="form-input" style="padding:8px 12px;" onchange="filterTrafficLog()">
+                        </div>
+                        <div class="form-group" style="margin:0;flex:1;min-width:180px;">
+                            <label style="font-size:12px;color:var(--text-secondary);">Utilizador</label>
+                            <input type="text" id="trafUserSearch" class="form-input" style="padding:8px 12px;" placeholder="Nome ou email…" oninput="filterTrafficLog()">
+                        </div>
+                        <button class="btn-secondary" onclick="resetTrafficFilters()" style="height:38px;white-space:nowrap;">✕ Limpar filtros</button>
+                    </div>
+                    <div style="margin-top:10px;font-size:13px;color:var(--text-secondary);">
+                        A mostrar <strong id="trafShownCount">0</strong> de <strong id="trafTotalCount">0</strong> registos
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card">
+                    <div style="overflow-x:auto;">
+                        <table class="data-table" id="trafficTable">
+                            <thead>
+                                <tr>
+                                    <th>Data / Hora</th>
+                                    <th>Página</th>
+                                    <th>Acção</th>
+                                    <th>Utilizador</th>
+                                    <th>Perfil</th>
+                                    <th>Detalhes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="trafficTableBody">
+                                <tr><td colspan="6" class="empty-row">Nenhum registo de tráfego ainda.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- Pagination -->
+                    <div id="trafPagination" style="display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap;"></div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -467,6 +593,7 @@
         </div>
     </div>
 
+    <script src="traffic-tracker.js"></script>
     <script src="script.js"></script>
     <script src="dashboard-data.js"></script>
     <script src="admin-dashboard.js"></script>

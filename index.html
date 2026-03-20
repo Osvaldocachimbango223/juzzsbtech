@@ -12,21 +12,17 @@
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
-                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
-                    <img src="logo.png" alt="" width="50px"> 
-                </svg>
-                
+                <img src="logo.png" alt="Logo" width="40px">
                 <div>
                     <h1>Juzzs</h1>
                     <span>Travel & Hospitality</span>
                 </div>
             </div>
             <div class="nav-links">
-                <a href="sobre.html">Sobre</a>
-                <a href="#servicos">Serviços</a>
-                <a href="#destinos">Destinos</a>
-                <a href="#hospedagem">Hospedagem</a>
-                <a href="#pacotes">Pacotes</a>
+                <a href="index.html">Início</a>
+                <a href="index.html#servicos">Serviços</a>
+                <a href="index.html#pacotes">Pacotes</a>
+                <a href="sobre.html" class="active">Sobre</a>
                 <a href="contacto.html">Contato</a>
                 <a href="login.html" class="btn-login">Entrar</a>
                 <a href="cadastro.html" class="btn-primary">Começar Agora</a>
@@ -48,7 +44,7 @@
                 <h2 class="hero-title">Descubra a Beleza de Angola com a Juzzs</h2>
                 <p class="hero-subtitle">Mais que hospedagem. Oferecemos experiências turísticas completas: passeios exclusivos, guias locais, transporte premium e imersão cultural.</p>
                 <div class="hero-buttons">
-                    <a href="cadastro.html" class="btn-hero-primary">Explorar Pacotes</a>
+                    <a href="pacotes.html" class="btn-hero-primary">Explorar Pacotes</a>
                     <a href="#servicos" class="btn-hero-secondary">Nossos Serviços</a>
                 </div>
                 <div class="hero-stats">
@@ -92,20 +88,54 @@
         </div>
     </section>
 
-    <!-- Destinos Section -->
+    <!-- Serviços — resumo em ícones, sem cards pesados -->
+    <section id="servicos" class="services-summary">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">O Que Oferecemos</span>
+                <h3 class="section-title">Tudo para a Sua Viagem</h3>
+            </div>
+            <div class="services-icons-row">
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">🏨</div>
+                    <span>Hospedagem</span>
+                </div>
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">🗺️</div>
+                    <span>Passeios</span>
+                </div>
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">🚐</div>
+                    <span>Transporte</span>
+                </div>
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">👤</div>
+                    <span>Guias Locais</span>
+                </div>
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">🍽️</div>
+                    <span>Gastronomia</span>
+                </div>
+                <div class="service-icon-item">
+                    <div class="service-icon-circle">🎭</div>
+                    <span>Cultura</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destinos — prévia com imagens locais (sem Unsplash) -->
     <section id="destinos" class="destinations">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Descubra Angola</span>
-                <h3 class="section-title">Destinos Imperdíveis</h3>
+                <h3 class="section-title">Destinos em Destaque</h3>
                 <p class="section-subtitle">Explore as maravilhas naturais e culturais que Angola tem a oferecer</p>
             </div>
-            
-            <div class="destinations-grid">
-                <!-- Destino 1: Menongue -->
+            <div class="destinations-grid destinations-grid--preview">
                 <div class="destination-card">
                     <div class="destination-image">
-                        <img src="rei.jpg" alt="Menongue - Cubango">
+                        <img src="rei.jpg" alt="Menongue - Cubango" loading="lazy">
                         <div class="destination-overlay">
                             <span class="destination-badge">Base Principal</span>
                         </div>
@@ -113,20 +143,18 @@
                     <div class="destination-content">
                         <h4>Menongue - Cubango</h4>
                         <p class="destination-location">Cubango</p>
-                        <p class="destination-desc">Capital da província do Cuando Cubango, cidade vibrante com rica cultura local e porta de entrada para aventuras inesquecíveis.</p>
+                        <p class="destination-desc">Capital da província do Cuando Cubango, cidade vibrante com rica cultura local.</p>
                         <div class="destination-highlights">
-                            <span class="highlight-tag"> Cultura</span>
-                            <span class="highlight-tag"> Natureza</span>
-                            <span class="highlight-tag"> História</span>
+                            <span class="highlight-tag">Cultura</span>
+                            <span class="highlight-tag">Natureza</span>
+                            <span class="highlight-tag">História</span>
                         </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
                     </div>
                 </div>
-
-                <!-- Destino 2: Loge -->
                 <div class="destination-card featured-dest">
                     <div class="destination-image">
-                        <img src="cuebelodge.jpg" alt="Cataratas do Binga">
+                        <img src="cuebelodge.jpg" alt="Lodge Menongue" loading="lazy">
                         <div class="destination-overlay">
                             <span class="destination-badge popular">Mais Procurado</span>
                         </div>
@@ -134,41 +162,18 @@
                     <div class="destination-content">
                         <h4>Lodge Menongue</h4>
                         <p class="destination-location">Rio Cunene</p>
-                        <p class="destination-desc">Um dos melhores rios de Angola. Um espetáculo natural de tirar o fôlego em meio à natureza selvagem.</p>
+                        <p class="destination-desc">Um espetáculo natural de tirar o fôlego em meio à natureza selvagem angolana.</p>
                         <div class="destination-highlights">
                             <span class="highlight-tag">Calda do Rio</span>
                             <span class="highlight-tag">Fotografia</span>
                             <span class="highlight-tag">Aventura</span>
                         </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
                     </div>
                 </div>
-
-                <!-- Destino 3: Parque Nacional Luiana -->
                 <div class="destination-card">
                     <div class="destination-image">
-                        <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800" alt="Parque Nacional Luiana">
-                        <div class="destination-overlay">
-                            <span class="destination-badge">Vida Selvagem</span>
-                        </div>
-                    </div>
-                    <div class="destination-content">
-                        <h4>Parque Nacional Luiana</h4>
-                        <p class="destination-location">Cuando Cubango</p>
-                        <p class="destination-desc">Vasta área protegida com fauna selvagem diversificada, incluindo elefantes, búfalos e uma grande variedade de aves africanas.</p>
-                        <div class="destination-highlights">
-                            <span class="highlight-tag"> Safari</span>
-                            <span class="highlight-tag">Elefantes</span>
-                            <span class="highlight-tag">Observação de Aves</span>
-                        </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
-                    </div>
-                </div>
-
-                <!-- Destino 4: Rio Cubango -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="balloon.jpg" alt="Rio Cubango">
+                        <img src="balloon.jpg" alt="Rio Cubango" loading="lazy">
                         <div class="destination-overlay">
                             <span class="destination-badge">Aventura Aquática</span>
                         </div>
@@ -176,288 +181,31 @@
                     <div class="destination-content">
                         <h4>Rio Cubango</h4>
                         <p class="destination-location">Cuando Cubango</p>
-                        <p class="destination-desc">Importante curso d'água que oferece oportunidades únicas para pesca desportiva, passeios de barco e observação da vida selvagem ripária.</p>
+                        <p class="destination-desc">Pesca desportiva, passeios de barco e observação da vida selvagem.</p>
                         <div class="destination-highlights">
                             <span class="highlight-tag">Pesca</span>
                             <span class="highlight-tag">Canoagem</span>
                             <span class="highlight-tag">Pôr do Sol</span>
                         </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
                     </div>
                 </div>
-
-                <!-- Destino 5: Aldeias Tradicionais -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="cultura.jpg" alt="Aldeias Tradicionais">
-                        <div class="destination-overlay">
-                            <span class="destination-badge">Imersão Cultural</span>
-                        </div>
-                    </div>
-                    <div class="destination-content">
-                        <h4>Aldeias Tradicionais</h4>
-                        <p class="destination-location">Región do Cubango</p>
-                        <p class="destination-desc">Visite comunidades locais e conheça os povos Cokwe, Mbunda e outros grupos étnicos, suas tradições, artesanato e modo de vida autêntico.</p>
-                        <div class="destination-highlights">
-                            <span class="highlight-tag">Artesanato</span>
-                            <span class="highlight-tag">Música</span>
-                            <span class="highlight-tag">Intercâmbio</span>
-                        </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
-                    </div>
-                </div>
-
-                <!-- Destino 6: Reserva do Mavinga -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800" alt="Reserva do Mavinga">
-                        <div class="destination-overlay">
-                            <span class="destination-badge">Conservação</span>
-                        </div>
-                    </div>
-                    <div class="destination-content">
-                        <h4>Reserva do Mavinga</h4>
-                        <p class="destination-location">Mavinga</p>
-                        <p class="destination-desc">Área de conservação com paisagens deslumbrantes, savanas extensas e oportunidade de observar a fauna africana em seu habitat natural.</p>
-                        <div class="destination-highlights">
-                            <span class="highlight-tag">Ecoturismo</span>
-                            <span class="highlight-tag">Fotossafari</span>
-                            <span class="highlight-tag">Preservação</span>
-                        </div>
-                        <a href="#pacotes" class="btn-destination">Ver Pacotes</a>
-                    </div>
-                </div>
+            </div>
+            <div class="section-cta">
+                <a href="destinos.html" class="btn-section-cta">Ver Todos os Destinos &rarr;</a>
             </div>
         </div>
     </section>
 
-    <!-- Hospedagem Section -->
-    <section id="hospedagem" class="accommodation">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Onde Ficar</span>
-                <h3 class="section-title">Nossas Opções de Hospedagem</h3>
-                <p class="section-subtitle">Do conforto básico ao luxo premium, temos a acomodação perfeita para você</p>
-            </div>
-            
-            <div class="accommodation-grid">
-                <!-- Hotel 1 -->
-                <div class="hotel-card">
-                    <div class="hotel-gallery">
-                        <div class="hotel-main-image">
-                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800" alt="Hotel Premium Menongue">
-                        </div>
-                        <div class="hotel-thumbnails">
-                            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=200" alt="Quarto">
-                            <img src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?w=200" alt="Área comum">
-                            <img src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=200" alt="Restaurante">
-                        </div>
-                    </div>
-                    <div class="hotel-content">
-                        <div class="hotel-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-score">4.8/5</span>
-                        </div>
-                        <h4>Hotel Premium Menongue</h4>
-                        <p class="hotel-location">Centro de Menongue - 2 km do aeroporto</p>
-                        <p class="hotel-desc">Hotel moderno com quartos espaçosos, ar-condicionado, Wi-Fi de alta velocidade e restaurante com culinária internacional e local.</p>
-                        
-                        <div class="hotel-amenities">
-                            <span class="amenity">Pequeno-almoço</span>
-                            <span class="amenity">Wi-Fi Grátis</span>
-                            <span class="amenity">Ar-condicionado</span>
-                            <span class="amenity">Estacionamento</span>
-                            <span class="amenity">Restaurante</span>
-                            <span class="amenity">Piscina</span>
-                        </div>
-                        
-                        <div class="hotel-price">
-                            <div class="price-info">
-                                <span class="price-label">A partir de</span>
-                                <span class="price-amount">15.000 Kz</span>
-                                <span class="price-period">/noite</span>
-                            </div>
-                            <a href="cadastro.html" class="btn-hotel">Reservar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hotel 2 -->
-                <div class="hotel-card">
-                    <div class="hotel-gallery">
-                        <div class="hotel-main-image">
-                            <img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800" alt="Pousada Cubango">
-                        </div>
-                        <div class="hotel-thumbnails">
-                            <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=200" alt="Quarto">
-                            <img src="https://images.unsplash.com/photo-1584132905271-512c958d674a?w=200" alt="Exterior">
-                            <img src="https://images.unsplash.com/photo-1559599746-8c8b5b15bc3e?w=200" alt="Varanda">
-                        </div>
-                    </div>
-                    <div class="hotel-content">
-                        <div class="hotel-rating">
-                            <span class="stars">⭐⭐⭐⭐</span>
-                            <span class="rating-score">4.5/5</span>
-                        </div>
-                        <h4>Pousada Cubango</h4>
-                        <p class="hotel-location">Próximo ao Rio Cubango - 5 km do centro</p>
-                        <p class="hotel-desc">Acomodação charmosa com vista para o rio, ambiente familiar e acesso direto a trilhas naturais e pontos de observação de aves.</p>
-                        
-                        <div class="hotel-amenities">
-                            <span class="amenity">Pequeno-almoço</span>
-                            <span class="amenity">Wi-Fi</span>
-                            <span class="amenity">Jardim</span>
-                            <span class="amenity">Estacionamento</span>
-                            <span class="amenity">Pesca</span>
-                            <span class="amenity">Atividades</span>
-                        </div>
-                        
-                        <div class="hotel-price">
-                            <div class="price-info">
-                                <span class="price-label">A partir de</span>
-                                <span class="price-amount">8.500 Kz</span>
-                                <span class="price-period">/noite</span>
-                            </div>
-                            <a href="cadastro.html" class="btn-hotel">Reservar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Hotel 3 -->
-                <div class="hotel-card featured-hotel">
-                    <div class="featured-hotel-badge">Recomendado</div>
-                    <div class="hotel-gallery">
-                        <div class="hotel-main-image">
-                            <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800" alt="Lodge Safari Luiana">
-                        </div>
-                        <div class="hotel-thumbnails">
-                            <img src="https://images.unsplash.com/photo-1578645510447-e20b4311e3ce?w=200" alt="Suite">
-                            <img src="https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=200" alt="Vista">
-                            <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=200" alt="Lounge">
-                        </div>
-                    </div>
-                    <div class="hotel-content">
-                        <div class="hotel-rating">
-                            <span class="stars">⭐⭐⭐⭐⭐</span>
-                            <span class="rating-score">4.9/5</span>
-                        </div>
-                        <h4>Lodge Safari Luiana</h4>
-                        <p class="hotel-location">Entrada do Parque Nacional Luiana</p>
-                        <p class="hotel-desc">Lodge exclusivo em plena natureza selvagem, com safaris guiados, observação noturna de animais e experiência gastronômica única sob as estrelas africanas.</p>
-                        
-                        <div class="hotel-amenities">
-                            <span class="amenity">Pensão Completa</span>
-                            <span class="amenity">Safari Incluído</span>
-                            <span class="amenity">Fogueira</span>
-                            <span class="amenity">Stargazing</span>
-                            <span class="amenity">Chef Privado</span>
-                            <span class="amenity">4x4 Privativo</span>
-                        </div>
-                        
-                        <div class="hotel-price">
-                            <div class="price-info">
-                                <span class="price-label">A partir de</span>
-                                <span class="price-amount">35.000 Kz</span>
-                                <span class="price-period">/noite</span>
-                            </div>
-                            <a href="cadastro.html" class="btn-hotel">Reservar</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Services Section -->
-    <section id="servicos" class="services">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Nossos Serviços</span>
-                <h3 class="section-title">Experiências Completas em Um Só Lugar</h3>
-                <p class="section-subtitle">Não vendemos apenas quartos de hotel. Oferecemos experiências turísticas integradas que transformam sua viagem em memórias inesquecíveis.</p>
-            </div>
-            <div class="services-grid">
-                <div class="service-card">
-                    <div class="service-icon">
-                        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="6" y="16" width="36" height="26" rx="2" stroke="currentColor" stroke-width="2.5" fill="none"/>
-                            <path d="M2 42h44M16 42V28h16v14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                            <rect x="19" y="32" width="10" height="10" rx="1" stroke="currentColor" stroke-width="2"/>
-                            <path d="M24 6l18 10H6L24 6z" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
-                        </svg>
-                    </div>
-                    <h4>Hospedagem Premium</h4>
-                    <p>Quartos confortáveis e modernos com todas as comodidades para garantir o seu descanso.</p>
-                    <ul class="service-features">
-                        <li>✓ Check-in digital</li>
-                        <li>✓ Wi-Fi de alta velocidade</li>
-                        <li>✓ Pequeno-almoço incluído</li>
-                    </ul>
-                </div>
-                <div class="service-card featured">
-                    <div class="featured-badge">Mais Popular</div>
-                    <div class="service-icon"></div>
-                    <h4>Passeios Exclusivos</h4>
-                    <p>Tours personalizados para descobrir as belezas naturais e culturais de Angola.</p>
-                    <ul class="service-features">
-                        <li>✓ Turismo natural</li>
-                        <li>✓ Turismo cultural</li>
-                        <li>✓ Turismo urbano</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"></div>
-                    <h4>Transporte Completo</h4>
-                    <p>Veículos modernos e motoristas experientes para levar você com segurança.</p>
-                    <ul class="service-features">
-                        <li>✓ Transfer aeroporto</li>
-                        <li>✓ Transporte para passeios</li>
-                        <li>✓ Veículos climatizados</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"></div>
-                    <h4>Guias Locais</h4>
-                    <p>Profissionais treinados que conhecem cada detalhe da cultura e história local.</p>
-                    <ul class="service-features">
-                        <li>✓ Guias multilíngues</li>
-                        <li>✓ Roteiros históricos</li>
-                        <li>✓ Experiências autênticas</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"></div>
-                    <h4>Gastronomia Local</h4>
-                    <p>Saboreie a culinária angolana em restaurantes parceiros selecionados.</p>
-                    <ul class="service-features">
-                        <li>Restaurantes típicos</li>
-                        <li>Experiências gastronômicas</li>
-                        <li>Cardápios especiais</li>
-                    </ul>
-                </div>
-                <div class="service-card">
-                    <div class="service-icon"></div>
-                    <h4>Imersão Cultural</h4>
-                    <p>Vivencie a cultura angolana através de eventos, festivais e experiências únicas.</p>
-                    <ul class="service-features">
-                        <li>✓ Festivais locais</li>
-                        <li>✓ Artesanato tradicional</li>
-                        <li>✓ Música e dança</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Packages Section -->
+    <!-- Pacotes — prévia de 3 -->
     <section id="pacotes" class="packages">
         <div class="container">
             <div class="section-header">
                 <span class="section-tag">Pacotes Turísticos</span>
-                <h3 class="section-title">Escolha Sua Experiência Ideal</h3>
-                <p class="section-subtitle">Pacotes cuidadosamente elaborados para diferentes estilos e orçamentos.</p>
+                <h3 class="section-title">Pacotes em Destaque</h3>
+                <p class="section-subtitle">Escolha a experiência que mais se adapta ao seu estilo e orçamento.</p>
             </div>
-            <div class="packages-grid">
+            <div class="packages-grid packages-grid--preview">
                 <div class="package-card">
                     <div class="package-tag">Básico</div>
                     <h4 class="package-name">Experiência Menongue</h4>
@@ -474,23 +222,6 @@
                     </ul>
                     <a href="cadastro.html" class="btn-package">Reservar Agora</a>
                 </div>
-                <div class="package-card">
-                    <div class="package-tag">Médio</div>
-                    <h4 class="package-name">Aventura Aquática</h4>
-                    <div class="package-price">
-                        <span class="price-value">45.000</span>
-                        <span class="price-currency">Kz</span>
-                    </div>
-                    <p class="package-desc">Explore o Rio Cubango com atividades aquáticas e relaxamento na Pousada Cubango.</p>
-                    <ul class="package-includes">
-                        <li>✓ 2 Noites na Pousada Cubango</li>
-                        <li>✓ Pensão completa</li>
-                        <li>✓ Passeio de barco</li>
-                        <li>✓ Pesca desportiva</li>
-                        <li>✓ Canoagem guiada</li>
-                    </ul>
-                    <a href="cadastro.html" class="btn-package">Reservar Agora</a>
-                </div>
                 <div class="package-card popular">
                     <div class="package-tag popular-tag">Mais Popular</div>
                     <h4 class="package-name">Experiência Cultural</h4>
@@ -503,7 +234,6 @@
                         <li>✓ 2 Noites de hospedagem</li>
                         <li>✓ City tour completo</li>
                         <li>✓ Tour cultural exclusivo</li>
-                        <li>✓ Transporte incluído</li>
                         <li>✓ Guia local especializado</li>
                         <li>✓ Jantar tradicional</li>
                     </ul>
@@ -516,84 +246,23 @@
                         <span class="price-value">120.000</span>
                         <span class="price-currency">Kz</span>
                     </div>
-                    <p class="package-desc">Experiência completa de safari no Parque Nacional Luiana com lodge exclusivo.</p>
+                    <p class="package-desc">Experiência completa de safari no Parque Nacional Luiana.</p>
                     <ul class="package-includes">
                         <li>✓ 3 Noites no Lodge Safari Luiana</li>
                         <li>✓ Pensão completa</li>
                         <li>✓ 2 Safaris diários</li>
-                        <li>✓ Guia especializado em fauna</li>
                         <li>✓ Transporte 4x4 privativo</li>
                     </ul>
                     <a href="cadastro.html" class="btn-package">Reservar Agora</a>
                 </div>
-                <div class="package-card">
-                    <div class="package-tag vip-tag">VIP Premium</div>
-                    <h4 class="package-name">Experiência Completa</h4>
-                    <div class="package-price">
-                        <span class="price-value">250.000</span>
-                        <span class="price-currency">Kz</span>
-                    </div>
-                    <p class="package-desc">A experiência definitiva com serviços premium e acesso exclusivo.</p>
-                    <ul class="package-includes">
-                        <li>✓ 5 Noites de hospedagem premium</li>
-                        <li>✓ Tours exclusivos personalizados</li>
-                        <li>✓ Jantares em restaurantes selecionados</li>
-                        <li>✓ Guia privado dedicado</li>
-                        <li>✓ Experiências VIP</li>
-                        <li>✓ Transporte premium</li>
-                        <li>✓ Acesso a eventos especiais</li>
-                    </ul>
-                    <a href="cadastro.html" class="btn-package">Reservar Agora</a>
-                </div>
+            </div>
+            <div class="section-cta">
+                <a href="pacotes.html" class="btn-section-cta">Ver Todos os Pacotes &rarr;</a>
             </div>
         </div>
     </section>
 
-    <!-- Gallery Section -->
-    <section class="gallery">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-tag">Galeria</span>
-                <h3 class="section-title">Momentos Inesquecíveis</h3>
-                <p class="section-subtitle">Veja o que nossos clientes experimentaram em Angola</p>
-            </div>
-            
-            <div class="gallery-grid">
-                <div class="gallery-item large">
-                    <img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?w=800" alt="Safari">
-                    <div class="gallery-overlay">
-                        <h5>Safari no Parque Luiana</h5>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=400" alt="Rio Cubango">
-                    <div class="gallery-overlay">
-                        <h5>Pôr do Sol no Rio Cubango</h5>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=400" alt="Cultura Local">
-                    <div class="gallery-overlay">
-                        <h5>Imersão Cultural</h5>
-                    </div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?w=400" alt="Cachoeiras">
-                    <div class="gallery-overlay">
-                        <h5>Cataratas do Binga</h5>
-                    </div>
-                </div>
-                <div class="gallery-item large">
-                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800" alt="Hospedagem">
-                    <div class="gallery-overlay">
-                        <h5>Conforto e Elegância</h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
+    <!-- CTA -->
     <section class="cta">
         <div class="container">
             <div class="cta-content">
@@ -610,11 +279,8 @@
             <div class="footer-grid">
                 <div class="footer-col">
                     <div class="footer-brand">
-                       <img src="logo.png" alt="" width="50px">
-                        <div>
-                            <h4>Juzzs</h4>
-                            <span>Travel & Hospitality</span>
-                        </div>
+                        <img src="logo.png" alt="" width="50px">
+                        <div><h4>Juzzs</h4><span>Travel & Hospitality</span></div>
                     </div>
                     <p>Experiências turísticas completas em Angola. Hospedagem, passeios, cultura e muito mais.</p>
                 </div>
@@ -622,13 +288,12 @@
                     <h5>Links Rápidos</h5>
                     <ul>
                         <li><a href="sobre.html">Sobre Nós</a></li>
-                        <li><a href="#servicos">Serviços</a></li>
-                        <li><a href="#destinos">Destinos</a></li>
-                        <li><a href="#pacotes">Pacotes</a></li>
+                        <li><a href="destinos.html">Destinos</a></li>
+                        <li><a href="pacotes.html">Pacotes</a></li>
+                        <li><a href="hospedagem.html">Hospedagem</a></li>
                         <li><a href="login.html">Login</a></li>
                     </ul>
                 </div>
-                
                 <div class="footer-col">
                     <h5>Contato</h5>
                     <ul>
@@ -649,18 +314,12 @@
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/244935144360?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20os%20pacotes%20da%20Juzzs%20Travel." 
-       class="whatsapp-float" 
-       target="_blank" 
-       rel="noopener noreferrer"
-       aria-label="Fale connosco no WhatsApp">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
+    <a href="https://wa.me/244935144360?text=Ol%C3%A1!%20Gostaria%20de%20saber%20mais%20sobre%20os%20pacotes%20da%20Juzzs%20Travel."
+       class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Fale connosco no WhatsApp">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         <span class="whatsapp-tooltip">Fale connosco</span>
     </a>
-
+    <script src="traffic-tracker.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -88,6 +88,7 @@
         </div>
     </div>
 
+    <script src="traffic-tracker.js"></script>
     <script src="script.js"></script>
     <script>
         async function hashPassword(password) {
@@ -138,6 +139,11 @@
                 delete sessionUser.passwordHash;
                 delete sessionUser.password;
                 localStorage.setItem('juzzs_current_user', JSON.stringify(sessionUser));
+
+                // Registar login no histórico de tráfego
+                if (typeof trackEvent === 'function') {
+                    trackEvent('login', sessionUser.name + ' (' + sessionUser.role + ')');
+                }
 
                 if (user.role === 'admin') {
                     window.location.href = 'dashboard-admin.html';

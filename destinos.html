@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinos - Juzzs Travel & Hospitality</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="logo.png" alt="" width="50px">
+                <div><h1>Juzzs</h1><span>Travel & Hospitality</span></div>
+            </div>
+            <div class="nav-links">
+                <a href="sobre.html">Sobre</a>
+                <a href="index.html#servicos">Serviços</a>
+                <a href="destinos.html" class="active">Destinos</a>
+                <a href="hospedagem.html">Hospedagem</a>
+                <a href="pacotes.html">Pacotes</a>
+                <a href="contacto.html">Contato</a>
+                <a href="login.html" class="btn-login">Entrar</a>
+                <a href="cadastro.html" class="btn-primary">Começar Agora</a>
+            </div>
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <span class="section-tag">Explore Angola</span>
+            <h2 class="page-title">Todos os Nossos Destinos</h2>
+            <p class="page-subtitle">Descubra as maravilhas naturais e culturais que Angola tem a oferecer</p>
+        </div>
+    </section>
+
+    <!-- Todos os Destinos -->
+    <section class="destinations destinations--full">
+        <div class="container">
+            <div class="destinations-grid">
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="rei.jpg" alt="Menongue - Cubango" loading="lazy">
+                        <div class="destination-overlay">
+                            <span class="destination-badge">Base Principal</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Menongue - Cubango</h4>
+                        <p class="destination-location">Cubango</p>
+                        <p class="destination-desc">Capital da província do Cuando Cubango, cidade vibrante com rica cultura local e porta de entrada para aventuras inesquecíveis.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Cultura</span>
+                            <span class="highlight-tag">Natureza</span>
+                            <span class="highlight-tag">História</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+
+                <div class="destination-card featured-dest">
+                    <div class="destination-image">
+                        <img src="cuebelodge.jpg" alt="Lodge Menongue" loading="lazy">
+                        <div class="destination-overlay">
+                            <span class="destination-badge popular">Mais Procurado</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Lodge Menongue</h4>
+                        <p class="destination-location">Rio Cunene</p>
+                        <p class="destination-desc">Um dos melhores rios de Angola. Um espetáculo natural de tirar o fôlego em meio à natureza selvagem.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Calda do Rio</span>
+                            <span class="highlight-tag">Fotografia</span>
+                            <span class="highlight-tag">Aventura</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <div class="img-placeholder ph-parque" role="img" aria-label="Parque Nacional Luiana"><span>🐘</span><p>Parque Nacional Luiana</p></div>
+                        <div class="destination-overlay">
+                            <span class="destination-badge">Vida Selvagem</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Parque Nacional Luiana</h4>
+                        <p class="destination-location">Cuando Cubango</p>
+                        <p class="destination-desc">Vasta área protegida com fauna selvagem diversificada, incluindo elefantes, búfalos e uma grande variedade de aves africanas.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Safari</span>
+                            <span class="highlight-tag">Elefantes</span>
+                            <span class="highlight-tag">Observação de Aves</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="balloon.jpg" alt="Rio Cubango" loading="lazy">
+                        <div class="destination-overlay">
+                            <span class="destination-badge">Aventura Aquática</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Rio Cubango</h4>
+                        <p class="destination-location">Cuando Cubango</p>
+                        <p class="destination-desc">Importante curso d'água que oferece pesca desportiva, passeios de barco e observação da vida selvagem ripária.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Pesca</span>
+                            <span class="highlight-tag">Canoagem</span>
+                            <span class="highlight-tag">Pôr do Sol</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <img src="cultura.jpg" alt="Aldeias Tradicionais" loading="lazy">
+                        <div class="destination-overlay">
+                            <span class="destination-badge">Imersão Cultural</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Aldeias Tradicionais</h4>
+                        <p class="destination-location">Região do Cubango</p>
+                        <p class="destination-desc">Visite comunidades locais e conheça os povos Cokwe, Mbunda e outros grupos étnicos, suas tradições e artesanato.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Artesanato</span>
+                            <span class="highlight-tag">Música</span>
+                            <span class="highlight-tag">Intercâmbio</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+
+                <div class="destination-card">
+                    <div class="destination-image">
+                        <div class="img-placeholder ph-mavinga" role="img" aria-label="Reserva do Mavinga"><span>🦒</span><p>Reserva do Mavinga</p></div>
+                        <div class="destination-overlay">
+                            <span class="destination-badge">Conservação</span>
+                        </div>
+                    </div>
+                    <div class="destination-content">
+                        <h4>Reserva do Mavinga</h4>
+                        <p class="destination-location">Mavinga</p>
+                        <p class="destination-desc">Área de conservação com paisagens deslumbrantes, savanas extensas e oportunidade de observar a fauna africana em habitat natural.</p>
+                        <div class="destination-highlights">
+                            <span class="highlight-tag">Ecoturismo</span>
+                            <span class="highlight-tag">Fotossafari</span>
+                            <span class="highlight-tag">Preservação</span>
+                        </div>
+                        <a href="pacotes.html" class="btn-destination">Ver Pacotes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h3>Pronto para Começar Sua Aventura?</h3>
+                <p>Escolha o seu destino e reserve agora com a Juzzs Travel.</p>
+                <a href="pacotes.html" class="btn-cta">Ver Pacotes Disponíveis</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-brand">
+                       <img src="logo.png" alt="" width="50px">
+                        <div><h4>Juzzs</h4><span>Travel & Hospitality</span></div>
+                    </div>
+                    <p>Experiências turísticas completas em Angola.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Links Rápidos</h5>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                        <li><a href="destinos.html">Destinos</a></li>
+                        <li><a href="pacotes.html">Pacotes</a></li>
+                        <li><a href="hospedagem.html">Hospedagem</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contato</h5>
+                    <ul>
+                        <li><img src="tele.png" alt="" width="45px"> +244 935 144 360</li>
+                        <li><img src="email.png" alt="" width="50px"> contato@juzzs.ao</li>
+                        <li><img src="loca.png" alt="" width="50px"> Menongue, Angola</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Juzzs Travel & Hospitality. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    <a href="https://wa.me/244935144360" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span class="whatsapp-tooltip">Fale connosco</span>
+    </a>
+    <script src="traffic-tracker.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

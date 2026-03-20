@@ -2069,3 +2069,173 @@ body {
         box-shadow: 0 8px 24px rgba(0,0,0,0.3);
     }
 }
+
+/* ===== NOVAS PÁGINAS DEDICADAS ===== */
+
+/* Page Header (cabeçalho de páginas internas) */
+.page-header {
+    padding: 140px 0 60px;
+    background: linear-gradient(135deg, var(--dark) 0%, var(--dark-lighter) 100%);
+    text-align: center;
+    color: var(--white);
+}
+.page-title {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    margin: 12px 0 16px;
+}
+.page-subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.75);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Botão "Ver Todos" abaixo das prévias */
+.section-cta {
+    text-align: center;
+    margin-top: 48px;
+}
+.btn-section-cta {
+    display: inline-block;
+    padding: 14px 36px;
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: var(--transition);
+}
+.btn-section-cta:hover {
+    background: var(--primary);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Grid preview - limita a 3 colunas max */
+.destinations-grid--preview {
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+.packages-grid--preview {
+    grid-template-columns: repeat(3, 1fr) !important;
+}
+@media (max-width: 900px) {
+    .destinations-grid--preview,
+    .packages-grid--preview {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+@media (max-width: 600px) {
+    .destinations-grid--preview,
+    .packages-grid--preview {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Link ativo na navegação */
+.nav-links a.active {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* Padding topo nas páginas completas para não ficar debaixo do nav */
+.destinations--full,
+.accommodation--full,
+.packages--full {
+    padding-top: 60px;
+    padding-bottom: 80px;
+}
+
+/* ===== PLACEHOLDERS DE IMAGEM (substitutos Unsplash) ===== */
+.img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    border-radius: inherit;
+    gap: 8px;
+}
+.img-placeholder span {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+.img-placeholder p {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.85);
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+    padding: 0 8px;
+}
+
+/* Gradientes individuais por placeholder */
+.ph-hotel-premium  { background: linear-gradient(135deg, #1a3a5c 0%, #2d6a9f 100%); }
+.ph-quarto         { background: linear-gradient(135deg, #2c3e50 0%, #3d6b8b 100%); }
+.ph-area-comum     { background: linear-gradient(135deg, #1e3a2f 0%, #2e7d52 100%); }
+.ph-restaurante    { background: linear-gradient(135deg, #3d1c00 0%, #8b4513 100%); }
+.ph-pousada        { background: linear-gradient(135deg, #1a4a2e 0%, #2d8a54 100%); }
+.ph-exterior       { background: linear-gradient(135deg, #2e4a1a 0%, #5a8a2d 100%); }
+.ph-varanda        { background: linear-gradient(135deg, #1a3a1a 0%, #3a7a3a 100%); }
+.ph-lodge          { background: linear-gradient(135deg, #3d2800 0%, #a06020 100%); }
+.ph-suite          { background: linear-gradient(135deg, #2a1800 0%, #7a4a10 100%); }
+.ph-vista          { background: linear-gradient(135deg, #001a3d 0%, #0a4a8a 100%); }
+.ph-lounge         { background: linear-gradient(135deg, #1a0a2e 0%, #4a2a7e 100%); }
+.ph-parque         { background: linear-gradient(135deg, #1a3a10 0%, #3a7a20 100%); }
+.ph-mavinga        { background: linear-gradient(135deg, #2a3a10 0%, #5a7a20 100%); }
+
+/* Thumbnails no hotel-gallery precisam altura definida */
+.hotel-thumbnails .img-placeholder {
+    min-height: 80px;
+}
+
+/* ===== SERVIÇOS — RESUMO EM ÍCONES (index.html) ===== */
+.services-summary {
+    padding: 80px 0;
+    background: var(--light-gray);
+}
+.services-icons-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 48px;
+}
+.service-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 100px;
+}
+.service-icon-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: var(--transition);
+}
+.service-icon-item:hover .service-icon-circle {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    background: var(--primary);
+}
+.service-icon-item span {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dark);
+    text-align: center;
+}
